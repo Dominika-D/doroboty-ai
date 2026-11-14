@@ -1,6 +1,7 @@
 import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
+import contributionSamples from "./data/contribution-samples.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
 
 const id = z
@@ -65,13 +66,135 @@ export const profileSchema = z.object({
   bio: text,
   location: shortText,
 });
+const contributionAnswer = z.string().trim().max(3000);
+/** Candidate contribution card (I4): four fixed questions, kept exactly as the candidate wrote them. */
+export const contributionSchema = z.object({
+  problem: contributionAnswer,
+  own: contributionAnswer,
+  decision: contributionAnswer,
+  result: contributionAnswer,
+});
+export type Contribution = z.infer<typeof contributionSchema>;
+export const contributionFields = ["problem", "own", "decision", "result"] as const;
+export type ContributionField = (typeof contributionFields)[number];
+export const contributionQuestions: Record<ContributionField, string> = {
+  problem: "Jaki problem rozwiązywał projekt i jakich narzędzi użyliście?",
+  own: "Co było Twoją częścią pracy, a co zrobili inni lub AI?",
+  decision: "Jaką decyzję w projekcie podjęłaś lub podjąłeś i dlaczego?",
+  result: "Jaki był wynik, kto z niego korzysta i jaki jest status projektu?",
+};
+export const contributionLabels: Record<ContributionField, string> = {
+  problem: "Problem i narzędzia",
+  own: "Moja część i część innych",
+  decision: "Moja decyzja",
+  result: "Wynik, użytkownicy i status",
+};
+export const emptyContribution: Contribution = { problem: "", own: "", decision: "", result: "" };
+export const INCOMPLETE_CONTRIBUTION_MESSAGE =
+  "Odpowiedz na wszystkie 4 pytania o wkład albo zostaw tę część pustą.";
+/** Returns undefined for an empty card and throws when only some answers are filled. */
+export function normalizeContribution(value: Contribution | undefined): Contribution | undefined {
+  if (!value) return undefined;
+  const card = contributionSchema.parse(value);
+  const filled = contributionFields.filter((field) => card[field].length > 0).length;
+  if (filled === 0) return undefined;
+  if (filled < contributionFields.length) throw new Error(INCOMPLETE_CONTRIBUTION_MESSAGE);
+  return card;
+}
+const firstSentence = (value: string, max = 180) => {
+  const sentence = value.split(/(?<=[.!?])\s/)[0] ?? value;
+  return sentence.length > max ? `${sentence.slice(0, max - 1).trimEnd()}…` : sentence;
+};
+/** Deterministic stand-in for an AI summary. No model is called. */
+export function simulateContributionSummary(card: Contribution, jobTitle: string) {
+  return `${firstSentence(card.own)} Związek z ofertą „${jobTitle}”: ${firstSentence(card.decision)}`;
+}
+/** Deterministic stand-in for two AI interview questions. No model is called. */
+export function simulateContributionQuestions(card: Contribution): string[] {
+  return [
+    `Proszę opowiedzieć krok po kroku, jak powstała ta część pracy: „${firstSentence(card.own, 140)}” Co było zrobione samodzielnie, a co przejęli inni lub AI?`,
+    `Jakie inne rozwiązania były brane pod uwagę przy decyzji: „${firstSentence(card.decision, 140)}” Po czym było widać, że to dobry wybór?`,
+  ];
+}
+export const CONTRIBUTION_RESPONSE_DAYS = 3;
+const DAY_MS = 86_400_000;
+export type ContributionState = "filled" | "waiting" | "no_response" | "missing";
+export const contributionStateLabels: Record<ContributionState, string> = {
+  filled: "Uzupełnione",
+  waiting: "Czeka na odpowiedź",
+  no_response: "Brak odpowiedzi",
+  missing: "Nieuzupełnione",
+};
+type ContributionRecord = Pick<
+  Application,
+  "contribution" | "contributionRequestedAt" | "contributionAddedAt" | "contributionSeenAt"
+>;
+export function contributionDeadline(application: Pick<Application, "contributionRequestedAt">) {
+  return application.contributionRequestedAt
+    ? new Date(
+        Date.parse(application.contributionRequestedAt) + CONTRIBUTION_RESPONSE_DAYS * DAY_MS,
+      ).toISOString()
+    : undefined;
+}
+export function contributionState(
+  application: ContributionRecord,
+  now = new Date().toISOString(),
+): ContributionState {
+  if (application.contribution) return "filled";
+  const deadline = contributionDeadline(application);
+  if (!deadline) return "missing";
+  return now > deadline ? "no_response" : "waiting";
+}
+export type ContributionFilter = "all" | "filled" | "unfilled";
+export const contributionFilterOptions: { value: ContributionFilter; label: string }[] = [
+  { value: "all", label: "Wszyscy kandydaci" },
+  { value: "filled", label: "Uzupełnione" },
+  { value: "unfilled", label: "Nieuzupełnione" },
+];
+export function filterByContribution<T extends ContributionRecord>(
+  list: T[],
+  filter: ContributionFilter,
+) {
+  if (filter === "all") return list;
+  return list.filter((x) => (x.contribution !== undefined) === (filter === "filled"));
+}
+export type ContributionNotification = {
+  applicationId: string;
+  candidateName: string;
+  jobTitle: string;
+  kind: "answered" | "no_response";
+  at: string;
+};
+/** Recruiter notifications derived from requests; opening the application marks them seen. */
+export function contributionNotifications(
+  state: State,
+  companyId: string | undefined,
+  now = new Date().toISOString(),
+): ContributionNotification[] {
+  const result: ContributionNotification[] = [];
+  for (const a of state.applications) {
+    if (a.companyId !== companyId || !a.contributionRequestedAt) continue;
+    const seen = a.contributionSeenAt ?? "";
+    const base = { applicationId: a.id, candidateName: a.candidateName, jobTitle: a.jobTitle };
+    if (a.contributionAddedAt && seen < a.contributionAddedAt)
+      result.push({ ...base, kind: "answered", at: a.contributionAddedAt });
+    const deadline = contributionDeadline(a)!;
+    if (contributionState(a, now) === "no_response" && seen < deadline)
+      result.push({ ...base, kind: "no_response", at: deadline });
+  }
+  return result.sort((x, y) => y.at.localeCompare(x.at));
+}
 const personSchema = profileSchema.extend({
   id,
+  /** Synthetic candidates used only to populate employer lists; hidden from the person picker. */
+  sample: z.boolean().optional(),
   role: z.enum(["candidate", "employer", "operator"]),
   companyId: id.optional(),
   cv: text,
   exampleScore: z.number().int().min(0).max(100),
   exampleSummary: text,
+  /** Last contribution card the candidate submitted; prefills the next application. */
+  contribution: contributionSchema.optional(),
 });
 export const stages = [
   "submitted",
@@ -117,6 +240,12 @@ const applicationSchema = z.object({
   generatedAnswer: text,
   score: z.number().int().min(0).max(100),
   summary: text,
+  contribution: contributionSchema.optional(),
+  contributionSummary: text.optional(),
+  contributionQuestions: z.array(text).max(2).optional(),
+  contributionRequestedAt: z.iso.datetime().optional(),
+  contributionAddedAt: z.iso.datetime().optional(),
+  contributionSeenAt: z.iso.datetime().optional(),
   stage: z.enum(stages),
   events: z
     .array(z.object({ stage: z.enum(stages), at: z.iso.datetime(), note: text }))
@@ -129,6 +258,7 @@ const draftSchema = z.object({
   notes: text,
   generated: text,
   answer: text,
+  contribution: contributionSchema.optional(),
 });
 export const stateSchema = z
   .object({
@@ -195,13 +325,25 @@ export const stateSchema = z
     }
   });
 export type State = z.infer<typeof stateSchema>;
+const terminalStages: Stage[] = ["hired", "rejected", "withdrawn"];
+/** Drafts may keep a partially filled card; only fully empty cards are dropped. */
+function normalizeContributionDraft(card: Contribution) {
+  return contributionFields.some((field) => card[field].trim().length > 0);
+}
 export type Person = State["people"][number];
 export type Application = State["applications"][number];
 export type Action =
   | { type: "select_person"; id: string | null }
   | { type: "profile"; value: z.infer<typeof profileSchema> }
   | { type: "toggle_saved"; jobId: string }
-  | { type: "draft"; jobId: string; notes: string; generated: string; answer: string }
+  | {
+      type: "draft";
+      jobId: string;
+      notes: string;
+      generated: string;
+      answer: string;
+      contribution?: Contribution;
+    }
   | {
       type: "submit";
       jobId: string;
@@ -209,7 +351,12 @@ export type Action =
       generated: string;
       answer: string;
       consent: boolean;
+      contribution?: Contribution;
     }
+  | { type: "request_contribution"; applicationId: string }
+  | { type: "expire_contribution_request"; applicationId: string }
+  | { type: "mark_contribution_seen"; applicationId: string }
+  | { type: "add_contribution"; applicationId: string; contribution: Contribution }
   | { type: "stage"; applicationId: string; stage: Stage; note: string }
   | { type: "withdraw"; applicationId: string }
   | { type: "publish"; job: z.infer<typeof jobSchema> }
@@ -220,7 +367,7 @@ export function initialState(): State {
     version: 1,
     activePersonId: null,
     ...marketplace,
-    people,
+    people: [...people, ...contributionSamples.people],
     applications: [],
     saved: [],
     drafts: [],
@@ -244,7 +391,60 @@ export function initialState(): State {
     stage: "submitted",
     events: [{ stage: "submitted", at: "2026-11-02T09:00:00.000Z", note: "" }],
   });
+  for (const sample of contributionSamples.applications) {
+    const candidate = state.people.find((x) => x.id === sample.candidateId)!;
+    const sampleJob = state.jobs.find((x) => x.id === sample.jobId)!;
+    const events: Application["events"] = [
+      { stage: "submitted", at: sample.submittedAt, note: "" },
+    ];
+    if (sample.stage === "reviewed")
+      events.push({
+        stage: "reviewed",
+        at: new Date(Date.parse(sample.submittedAt) + 86_400_000).toISOString(),
+        note: "",
+      });
+    state.applications.push({
+      id: sample.id,
+      candidateId: candidate.id,
+      jobId: sampleJob.id,
+      companyId: sampleJob.companyId,
+      jobTitle: sampleJob.title,
+      candidateName: candidate.name,
+      cv: candidate.cv,
+      answer: sample.answer,
+      sourceNotes: "",
+      generatedAnswer: "",
+      score: candidate.exampleScore,
+      summary: candidate.exampleSummary,
+      ...("contribution" in sample
+        ? {
+            contribution: sample.contribution,
+            contributionSummary: sample.contributionSummary,
+            contributionQuestions: sample.contributionQuestions,
+          }
+        : {}),
+      stage: events.at(-1)!.stage,
+      events,
+    });
+  }
   return stateSchema.parse(state);
+}
+export type ApplicationSort = "newest" | "score";
+export const applicationSortOptions: { value: ApplicationSort; label: string }[] = [
+  { value: "newest", label: "Najnowsze aplikacje" },
+  { value: "score", label: "Match Score: od najwyższego" },
+];
+function submittedAt(application: { events: { at: string }[] }) {
+  return application.events[0]?.at ?? "";
+}
+/** Sorting only reorders; ties fall back to the submission date. */
+export function sortApplications<T extends { score: number; events: { at: string }[] }>(
+  list: T[],
+  sort: ApplicationSort,
+) {
+  const byDate = (a: T, b: T) => submittedAt(b).localeCompare(submittedAt(a));
+  const byScore = (a: T, b: T) => b.score - a.score || byDate(a, b);
+  return [...list].sort(sort === "score" ? byScore : byDate);
 }
 export function publishedJobs(state: State): JobWithCompany[] {
   return state.jobs
@@ -288,7 +488,17 @@ export function transition(
     else s.saved.push({ candidateId: p.id, jobId: action.jobId });
   } else if (action.type === "draft") {
     const p = candidate();
-    const draft = draftSchema.parse({ candidateId: p.id, ...action });
+    const contribution = action.contribution
+      ? contributionSchema.parse(action.contribution)
+      : undefined;
+    const draft = draftSchema.parse({
+      candidateId: p.id,
+      jobId: action.jobId,
+      notes: action.notes,
+      generated: action.generated,
+      answer: action.answer,
+      ...(contribution && normalizeContributionDraft(contribution) ? { contribution } : {}),
+    });
     s.drafts = s.drafts.filter((x) => !(x.candidateId === p.id && x.jobId === action.jobId));
     s.drafts.push(draft);
   } else if (action.type === "submit") {
@@ -296,6 +506,7 @@ export function transition(
     const job = s.jobs.find((x) => x.id === action.jobId && x.publicationStatus === "published");
     if (!job) return fail("Oferta nie jest dostępna.");
     if (!action.consent) fail("Zatwierdź treść i zgodę na przesłanie aplikacji.");
+    const contribution = normalizeContribution(action.contribution);
     if (s.applications.some((x) => x.candidateId === p.id && x.jobId === job.id))
       fail("Aplikacja na tę ofertę została już wysłana.");
     s.applications.push(
@@ -312,10 +523,18 @@ export function transition(
         generatedAnswer: action.generated,
         score: p.exampleScore,
         summary: p.exampleSummary,
+        ...(contribution
+          ? {
+              contribution,
+              contributionSummary: simulateContributionSummary(contribution, job.title),
+              contributionQuestions: simulateContributionQuestions(contribution),
+            }
+          : {}),
         stage: "submitted",
         events: [{ stage: "submitted", at: now, note: "" }],
       }),
     );
+    if (contribution) p.contribution = contribution;
     s.drafts = s.drafts.filter((x) => !(x.candidateId === p.id && x.jobId === job.id));
   } else if (action.type === "stage" || action.type === "withdraw") {
     const application = s.applications.find((x) => x.id === action.applicationId);
@@ -335,6 +554,55 @@ export function transition(
     }
     application.stage = stage;
     application.events.push({ stage, at: now, note: action.type === "stage" ? action.note : "" });
+  } else if (action.type === "request_contribution") {
+    const p = employer();
+    const application = s.applications.find((x) => x.id === action.applicationId);
+    if (!application || application.companyId !== p.companyId)
+      return fail("Nie znaleziono aplikacji.");
+    if (
+      application.contribution ||
+      application.contributionRequestedAt ||
+      terminalStages.includes(application.stage)
+    )
+      fail("Nie można poprosić o opis wkładu w tej aplikacji.");
+    application.contributionRequestedAt = now;
+  } else if (
+    action.type === "expire_contribution_request" ||
+    action.type === "mark_contribution_seen"
+  ) {
+    const p = employer();
+    const application = s.applications.find((x) => x.id === action.applicationId);
+    if (!application || application.companyId !== p.companyId)
+      return fail("Nie znaleziono aplikacji.");
+    if (action.type === "mark_contribution_seen") application.contributionSeenAt = now;
+    else {
+      // Prototype-only shortcut so a test session can show the missed deadline without waiting.
+      if (contributionState(application, now) !== "waiting")
+        fail("Ta prośba nie czeka na odpowiedź.");
+      application.contributionRequestedAt = new Date(
+        Date.parse(now) - CONTRIBUTION_RESPONSE_DAYS * DAY_MS - 60_000,
+      ).toISOString();
+    }
+  } else if (action.type === "add_contribution") {
+    const p = candidate();
+    const application = s.applications.find((x) => x.id === action.applicationId);
+    if (!application || application.candidateId !== p.id) return fail("Nie znaleziono aplikacji.");
+    if (
+      application.contribution ||
+      terminalStages.includes(application.stage) ||
+      contributionState(application, now) !== "waiting"
+    )
+      fail("Nie można dodać opisu wkładu do tej aplikacji. Termin na odpowiedź minął.");
+    const contribution = normalizeContribution(action.contribution);
+    if (!contribution) return fail(INCOMPLETE_CONTRIBUTION_MESSAGE);
+    application.contribution = contribution;
+    application.contributionSummary = simulateContributionSummary(
+      contribution,
+      application.jobTitle,
+    );
+    application.contributionQuestions = simulateContributionQuestions(contribution);
+    application.contributionAddedAt = now;
+    p.contribution = contribution;
   } else if (action.type === "publish") {
     const p = employer();
     const job = jobSchema.parse(action.job);

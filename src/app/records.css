@@ -337,3 +337,156 @@
   border-radius: 10px;
   background: var(--gui-canvas);
 }
+
+/* Candidate contribution card (task karta-wkladu). Host extension composed from record recipes. */
+.contribution-status {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 2px 11px;
+  border: 1px solid var(--gui-text);
+  border-radius: 18px;
+  background: #ffffff;
+  color: var(--gui-text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.contribution-status[data-state="filled"] {
+  background: #e3f7d4;
+}
+.contribution-status:is([data-state="missing"], [data-state="waiting"]) {
+  border-style: dashed;
+  border-color: var(--gui-text-muted);
+  color: var(--gui-text-muted);
+  font-weight: 400;
+}
+.contribution-status[data-state="no_response"] {
+  background: #ffe0e3;
+}
+.candidate-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.candidate-list-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(2, minmax(200px, 260px));
+  gap: 16px;
+  align-items: end;
+}
+@media (max-width: 700px) {
+  .candidate-list-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .candidate-facts {
+    justify-content: flex-start;
+  }
+}
+.contribution-card {
+  display: grid;
+  gap: 22px;
+}
+.contribution-summary {
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #ffe0f7;
+}
+.contribution-summary h4,
+.contribution-answers dt {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.contribution-summary h4 {
+  margin-bottom: 6px;
+}
+.contribution-answers {
+  display: grid;
+  gap: 18px;
+}
+.contribution-answers dd {
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.contribution-request-notice {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #ffe0f7;
+}
+.contribution-questions {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+  list-style: none;
+  padding: 0;
+}
+.contribution-questions .field > span {
+  font-size: 15px;
+}
+.contribution-questions textarea {
+  margin-top: 6px;
+  min-height: 96px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.contribution-subheading {
+  margin-bottom: 6px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.contribution-interview {
+  display: grid;
+  gap: 10px;
+  padding-left: 22px;
+  list-style: decimal;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.contribution-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.contribution-details[open] summary {
+  margin-bottom: 14px;
+}
+.contribution-request-notice[data-state="no_response"] {
+  background: #ffe0e3;
+}
+.contribution-notifications {
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  border: 1px solid var(--gui-text);
+  border-radius: 20px;
+  background: #ffffff;
+}
+.contribution-notifications h2 {
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: normal;
+}
+.contribution-notifications ul {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.contribution-notifications a {
+  font-weight: 600;
+  color: var(--gui-link);
+}

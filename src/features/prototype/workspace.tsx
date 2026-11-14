@@ -10,7 +10,34 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { JobCard } from "@/features/jobs/job-card";
 import { ApplicationOfferPreview } from "@/features/jobs/application-offer-preview";
 import { usePrototype } from "./store";
-import { currentPerson, publishedJobs, stageLabels, MIN_APPLICATION_ANSWER_LENGTH } from "./model";
+import {
+  currentPerson,
+  publishedJobs,
+  stageLabels,
+  MIN_APPLICATION_ANSWER_LENGTH,
+  contributionFields,
+  emptyContribution,
+  INCOMPLETE_CONTRIBUTION_MESSAGE,
+  type Contribution,
+  type ContributionField,
+  sortApplications,
+  applicationSortOptions as sortOptions,
+  type ApplicationSort as SortKey,
+  contributionFilterOptions,
+  filterByContribution,
+  contributionNotifications,
+  contributionState,
+  contributionDeadline,
+  contributionLabels,
+  type ContributionFilter,
+} from "./model";
+import { FormSelect } from "@/components/ui/form-select";
+import {
+  ContributionFields,
+  ContributionNotifications,
+  ContributionStatus,
+  formatContributionDate,
+} from "./contribution";
 import { PageTitle, Empty, NotFound, Notice } from "./shell";
 import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
@@ -31,10 +58,11 @@ export function PersonPicker() {
   const [params] = useSearchParams();
   const next = params.get("next");
   const audience = params.get("audience");
+  const selectable = state.people.filter((person) => !person.sample);
   const people =
     audience === "candidate" || audience === "employer"
-      ? state.people.filter((person) => person.role === audience)
-      : state.people;
+      ? selectable.filter((person) => person.role === audience)
+      : selectable;
   const safeNext = next && /^\/(?!\/)/.test(next) && !next.startsWith("/auth") ? next : null;
   return (
     <section className="prototype-section max-w-4xl">
@@ -104,6 +132,11 @@ export function WorkspaceHome() {
   return (
     <>
       <PageTitle>Witaj, {person.name.split(" ")[0]}</PageTitle>
+      {!candidate && (
+        <ContributionNotifications
+          notifications={contributionNotifications(state, person.companyId)}
+        />
+      )}
       <div className="grid gap-5 sm:grid-cols-3">
         {[
           ["Aplikacje", applications.length],
@@ -197,6 +230,32 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           {message && <p role="status">{message}</p>}
         </form>
       )}
+      {person.role === "candidate" && (
+        <section className="prototype-panel mt-6" aria-labelledby="profile-contribution">
+          <h2 id="profile-contribution" className="mb-4">
+            Wkład własny
+          </h2>
+          {person.contribution ? (
+            <>
+              <dl className="contribution-answers">
+                {contributionFields.map((field) => (
+                  <div key={field}>
+                    <dt>{contributionLabels[field]}</dt>
+                    <dd>{person.contribution![field]}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="record-caption mt-4">
+                Zapisane z ostatniej aplikacji. Zmienisz je przy kolejnym aplikowaniu.
+              </p>
+            </>
+          ) : (
+            <p className="text-muted-foreground">
+              Uzupełnisz go przy aplikowaniu. Odpowiedzi zapiszemy tutaj.
+            </p>
+          )}
+        </section>
+      )}
       <section className="prototype-panel mt-6">
         <h2 className="mb-4 flex items-center gap-2">
           <FileText className="size-5" />
@@ -239,6 +298,9 @@ export function ApplyPage() {
   const notes = draft?.notes ?? "";
   const generated = draft?.generated ?? "";
   const [answer, setAnswer] = useState(draft?.answer ?? "");
+  const [contribution, setContribution] = useState<Contribution>(
+    draft?.contribution ?? person.contribution ?? emptyContribution,
+  );
   const [consent, setConsent] = useState(false);
   const [message, setMessage] = useState("");
   const [attempted, setAttempted] = useState(false);
@@ -256,6 +318,13 @@ export function ApplyPage() {
   const answerLength = answer.trim().length;
   const answerInvalid = attempted && answerLength < MIN_APPLICATION_ANSWER_LENGTH;
   const consentInvalid = attempted && !consent;
+  const filledContribution = contributionFields.filter(
+    (field) => contribution[field].trim().length > 0,
+  );
+  const contributionMissing: ContributionField[] =
+    attempted && filledContribution.length > 0
+      ? contributionFields.filter((field) => contribution[field].trim().length === 0)
+      : [];
   if (!job) return <NotFound />;
   const existing = state.applications.find(
     (x) => x.jobId === job.id && x.candidateId === person.id,
@@ -277,11 +346,16 @@ export function ApplyPage() {
       answerInput.current?.focus();
       return;
     }
+    const missing = contributionFields.filter((field) => contribution[field].trim().length === 0);
+    if (missing.length > 0 && missing.length < contributionFields.length) {
+      document.getElementById(`application-contribution-${missing[0]}`)?.focus();
+      return;
+    }
     if (!consent) {
       document.getElementById("application-consent")?.focus();
       return;
     }
-    if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent })) {
+    if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent, contribution })) {
       submittedOnce.current = true;
       setSubmitted(true);
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -352,6 +426,33 @@ export function ApplyPage() {
                 : `Minimum ${MIN_APPLICATION_ANSWER_LENGTH} znaków. Obecnie: ${answerLength}.`}
             </p>
           </section>
+          <section
+            className="application-form-section application-contribution"
+            aria-labelledby="application-contribution-title"
+          >
+            <h3 id="application-contribution-title">Wkład własny (opcjonalnie)</h3>
+            <p className="application-help" id="application-contribution-help">
+              Opisz jeden projekt z AI i to, co w nim zrobiłeś(-aś) samodzielnie. Pracodawca
+              dostanie podsumowanie Twoich odpowiedzi. Odpowiedzi zapiszemy w Twoim profilu, żeby
+              nie pisać ich od nowa przy kolejnej aplikacji. Odpowiedz na wszystkie 4 pytania albo
+              zostaw tę część pustą.
+            </p>
+            <ContributionFields
+              idPrefix="application-contribution"
+              value={contribution}
+              disabled={submitted}
+              invalidFields={contributionMissing}
+              onChange={(field, text) => {
+                setContribution((current) => ({ ...current, [field]: text }));
+                setConsent(false);
+              }}
+            />
+            {contributionMissing.length > 0 && (
+              <p className="error-message" role="alert">
+                {INCOMPLETE_CONTRIBUTION_MESSAGE}
+              </p>
+            )}
+          </section>
           <div className="application-form-section application-submit">
             <label className="application-consent">
               <Checkbox
@@ -387,7 +488,7 @@ export function ApplyPage() {
                 disabled={submitted}
                 variant="outline"
                 onClick={() => {
-                  if (run({ type: "draft", jobId: job.id, notes, generated, answer }))
+                  if (run({ type: "draft", jobId: job.id, notes, generated, answer, contribution }))
                     setMessage("Szkic został zapisany.");
                 }}
               >
@@ -414,14 +515,20 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
   const { state } = usePrototype();
   const person = currentPerson(state)!;
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<SortKey>("newest");
+  const [cardFilter, setCardFilter] = useState<ContributionFilter>("all");
+  const now = new Date().toISOString();
   const [params] = useSearchParams();
-  const applications = state.applications.filter(
+  const filtered = state.applications.filter(
     (x) =>
       (employer ? x.companyId === person.companyId : x.candidateId === person.id) &&
       `${x.candidateName} ${x.jobTitle}`
         .toLocaleLowerCase("pl")
         .includes(query.toLocaleLowerCase("pl")),
   );
+  const applications = employer
+    ? sortApplications(filterByContribution(filtered, cardFilter), sort)
+    : filtered;
   return (
     <>
       <PageTitle>{employer ? "Kandydaci" : "Moje aplikacje"}</PageTitle>
@@ -430,9 +537,36 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
           <CheckCircle2 className="inline size-5" /> Aplikacja została wysłana.
         </Notice>
       )}
-      <Field label={employer ? "Szukaj kandydata lub oferty" : "Szukaj oferty"}>
-        <Input value={query} onChange={(e) => setQuery(e.target.value)} />
-      </Field>
+      {employer && (
+        <ContributionNotifications
+          notifications={contributionNotifications(state, person.companyId, now)}
+        />
+      )}
+      <div className={employer ? "candidate-list-controls" : undefined}>
+        <Field label={employer ? "Szukaj kandydata lub oferty" : "Szukaj oferty"}>
+          <Input value={query} onChange={(e) => setQuery(e.target.value)} />
+        </Field>
+        {employer && (
+          <>
+            <Field label="Wkład własny">
+              <FormSelect
+                ariaLabel="Filtruj po wkładzie własnym"
+                value={cardFilter}
+                options={contributionFilterOptions}
+                onValueChange={(value) => setCardFilter(value as ContributionFilter)}
+              />
+            </Field>
+            <Field label="Sortuj">
+              <FormSelect
+                ariaLabel="Sortuj kandydatów"
+                value={sort}
+                options={sortOptions}
+                onValueChange={(value) => setSort(value as SortKey)}
+              />
+            </Field>
+          </>
+        )}
+      </div>
       <div className="mt-6 space-y-4">
         {applications.length ? (
           applications.map((a) => (
@@ -452,7 +586,15 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                   </p>
                   <p>{stageLabels[a.stage]}</p>
                 </div>
-                <MatchScore score={a.score} />
+                <div className="candidate-facts">
+                  <MatchScore score={a.score} />
+                  {employer && <ContributionStatus application={a} now={now} />}
+                  {!employer && contributionState(a, now) === "waiting" && (
+                    <span className="contribution-status" data-state="waiting">
+                      Prośba o opis wkładu do {formatContributionDate(contributionDeadline(a)!)}
+                    </span>
+                  )}
+                </div>
               </div>
               {employer && <p className="mt-4 text-muted-foreground">{a.summary}</p>}
             </article>

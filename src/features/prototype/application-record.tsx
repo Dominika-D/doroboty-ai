@@ -4,6 +4,7 @@ import { ProcessTimeline } from "@/components/process-timeline";
 import { RecordSheet } from "@/components/record-sheet";
 import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
+import { ContributionStatus } from "./contribution";
 import { stageLabels, type Application, type Stage } from "./model";
 
 type RecordEvent = { stage: Stage; at: string; note?: string };
@@ -19,17 +20,29 @@ export function ApplicationRecord({
   audience,
   history,
   statusRef,
+  contribution,
   children,
   footer,
 }: {
   application: Pick<
     Application,
-    "candidateId" | "candidateName" | "jobTitle" | "stage" | "answer" | "cv" | "score" | "summary"
+    | "candidateId"
+    | "candidateName"
+    | "jobTitle"
+    | "stage"
+    | "answer"
+    | "cv"
+    | "score"
+    | "summary"
+    | "contribution"
+    | "contributionRequestedAt"
   >;
   companyName: string;
   audience: "candidate" | "employer";
   history: RecordEvent[];
   statusRef?: Ref<HTMLSpanElement>;
+  /** Content of the "Wkład własny" tab; the role controller owns its actions. */
+  contribution?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
 }) {
@@ -56,6 +69,7 @@ export function ApplicationRecord({
             {stageLabels[application.stage]}
           </span>
           <MatchScore score={application.score} />
+          {!candidate && <ContributionStatus application={application} />}
           {submitted && (
             <span>
               Złożona:{" "}
@@ -78,6 +92,20 @@ export function ApplicationRecord({
                 </>
               ),
             },
+            ...(contribution
+              ? [
+                  {
+                    value: "contribution",
+                    label: "Wkład własny",
+                    content: (
+                      <>
+                        <h3>Mój wkład w projekt</h3>
+                        {contribution}
+                      </>
+                    ),
+                  },
+                ]
+              : []),
             {
               value: "cv",
               label: "CV",

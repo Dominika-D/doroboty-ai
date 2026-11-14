@@ -1,9 +1,18 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ApplicationRecord } from "./application-record";
-import { nextStages, stageLabels, type Application } from "./model";
+import {
+  CONTRIBUTION_RESPONSE_DAYS,
+  contributionDeadline,
+  contributionNotifications,
+  contributionState,
+  nextStages,
+  stageLabels,
+  type Application,
+} from "./model";
 import { usePrototype } from "./store";
+import { ContributionView, contributionAsText, formatContributionDate } from "./contribution";
 
 export function RecruitingApplication({ application }: { application: Application }) {
   const { state, run } = usePrototype();
@@ -13,13 +22,107 @@ export function RecruitingApplication({ application }: { application: Applicatio
   const pendingFocus = useRef(false);
   const company = state.companies.find((item) => item.id === application.companyId);
   const availableStages = nextStages[application.stage];
+  const [contributionMessage, setContributionMessage] = useState("");
+  const requestRef = useRef<HTMLParagraphElement>(null);
+  const pendingRequestFocus = useRef(false);
+  const terminal = availableStages.length === 0;
+  const now = new Date().toISOString();
+  const cardState = contributionState(application, now);
+  const deadline = contributionDeadline(application);
+  const unseen = contributionNotifications(state, application.companyId, now).some(
+    (n) => n.applicationId === application.id,
+  );
+
+  // Opening the application marks its contribution notifications as read (once per visit,
+  // so a deadline simulated on this page still notifies on the candidate list).
+  const markedOnOpen = useRef(false);
+  useEffect(() => {
+    if (markedOnOpen.current) return;
+    markedOnOpen.current = true;
+    if (unseen) run({ type: "mark_contribution_seen", applicationId: application.id });
+  }, [unseen, application.id, run]);
 
   useLayoutEffect(() => {
-    if (pendingFocus.current) {
-      statusRef.current?.focus();
-      pendingFocus.current = false;
+    if (pendingRequestFocus.current) {
+      requestRef.current?.focus();
+      pendingRequestFocus.current = false;
     }
-  }, [application.stage]);
+  }, [application.contributionRequestedAt]);
+
+  async function copyContribution() {
+    try {
+      await navigator.clipboard.writeText(contributionAsText(application));
+      setContributionMessage(
+        "Skopiowano odpowiedzi i pytania. Możesz je wkleić osobie technicznej.",
+      );
+    } catch {
+      setContributionMessage("Nie udało się skopiować. Zaznacz tekst i skopiuj go ręcznie.");
+    }
+  }
+
+  const contribution =
+    cardState === "filled" ? (
+      <>
+        <ContributionView application={application} audience="employer" />
+        <div className="record-actions">
+          <Button variant="outline" onClick={copyContribution}>
+            Kopiuj odpowiedzi i pytania
+          </Button>
+        </div>
+        <p role="status" className={contributionMessage ? "record-caption" : "sr-only"}>
+          {contributionMessage}
+        </p>
+      </>
+    ) : (
+      <div className="contribution-empty">
+        <p>Kandydat nie uzupełnił wkładu własnego.</p>
+        {cardState === "missing" && !terminal && (
+          <>
+            <p className="record-caption">
+              Kandydat dostanie prośbę w swojej aplikacji i będzie miał {CONTRIBUTION_RESPONSE_DAYS}{" "}
+              dni na odpowiedź. Powiadomimy Cię o odpowiedzi albo jej braku.
+            </p>
+            <div className="record-actions">
+              <Button
+                onClick={() => {
+                  if (run({ type: "request_contribution", applicationId: application.id })) {
+                    setAnnouncement("Wysłano prośbę o opis wkładu.");
+                    pendingRequestFocus.current = true;
+                  }
+                }}
+              >
+                Poproś o opis wkładu
+              </Button>
+            </div>
+          </>
+        )}
+        {cardState === "waiting" && deadline && (
+          <>
+            <p className="contribution-request-notice" tabIndex={-1} ref={requestRef}>
+              Poproszono o opis wkładu. Czekamy na odpowiedź do{" "}
+              <time dateTime={deadline}>{formatContributionDate(deadline)}</time>.
+            </p>
+            <div className="record-actions">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  if (run({ type: "expire_contribution_request", applicationId: application.id }))
+                    setAnnouncement("Termin minął. Status: Brak odpowiedzi.");
+                }}
+              >
+                Prototyp: symuluj upływ {CONTRIBUTION_RESPONSE_DAYS} dni
+              </Button>
+            </div>
+          </>
+        )}
+        {cardState === "no_response" && deadline && (
+          <p className="contribution-request-notice" data-state="no_response">
+            Brak odpowiedzi. Termin minął{" "}
+            <time dateTime={deadline}>{formatContributionDate(deadline)}</time>.
+          </p>
+        )}
+      </div>
+    );
 
   return (
     <>
@@ -29,6 +132,7 @@ export function RecruitingApplication({ application }: { application: Applicatio
         audience="employer"
         history={application.events}
         statusRef={statusRef}
+        contribution={contribution}
         footer={
           availableStages.length > 0 ? (
             <>

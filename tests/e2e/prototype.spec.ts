@@ -144,7 +144,7 @@ test("published job → saved offer/draft → submitted application → employer
   await page
     .getByLabel("Notatka rekrutacyjna (widoczna pracodawcy)")
     .fill("Notatka pracodawcy — tylko panel firmy.");
-  await page.getByRole("button", { name: "W przeglądzie", exact: true }).click();
+  await page.getByRole("button", { name: "W trakcie", exact: true }).click();
   for (const label of ["Zaproszenie na rozmowę", "Pierwsza rozmowa odbyta", "Kolejny etap"])
     await page.getByRole("button", { name: label, exact: true }).click();
   await page.reload();
@@ -725,7 +725,7 @@ test("process sheet keeps notes across keyboard tabs and saves stage history wit
   await expect(note).toHaveValue(text);
   await expect(preview).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Pobierz CV (PDF)", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "W przeglądzie", exact: true }).click();
+  await page.getByRole("button", { name: "W trakcie", exact: true }).click();
   await expect(page.locator(".record-stage")).toBeFocused();
   await expect(note).toHaveValue("");
   await expect(page.locator(".process-timeline")).toContainText(text);

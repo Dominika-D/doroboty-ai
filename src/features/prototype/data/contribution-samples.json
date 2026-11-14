@@ -135,7 +135,7 @@
         "decision": "Zdecydowałam, że model tylko proponuje kategorię, a konsultant ją zatwierdza. Przy automatycznym przypisaniu błędne zgłoszenia trafiały do złych zespołów i klienci czekali dłużej.",
         "result": "Czas przypisania zgłoszenia spadł z 6 do 2 minut. Korzysta 38 konsultantów. Narzędzie działa produkcyjnie od 8 miesięcy."
       },
-      "contributionSummary": "Prowadziła rozmowy z użytkownikami i testy jakości przy klasyfikacji zgłoszeń; integrację techniczną zrobił programista. Związek z ofertą: decyzja o roli człowieka w procesie z AI i zmierzony efekt (6 → 2 minuty).",
+      "contributionSummary": "Projekt automatyzował przypisywanie zgłoszeń w obsłudze klienta sklepu internetowego (ok. 40 konsultantów; GPT-4o, Zendesk, Retool). Kandydatka samodzielnie przeprowadziła 12 rozmów z konsultantami, rozpisała kategorie i kryteria jakości oraz poprowadziła testy na 500 zgłoszeniach; integrację napisał programista, a prompty dopracowywali wspólnie. Zdecydowała, że model tylko proponuje kategorię, a konsultant ją zatwierdza, bo automatyczne przypisanie kierowało zgłoszenia do złych zespołów. Efekt: czas przypisania spadł z 6 do 2 minut, narzędzie działa produkcyjnie od 8 miesięcy. Związek z ofertą: prowadzenie discovery i decyzja o roli człowieka w procesie z AI.",
       "contributionQuestions": [
         "Jak wyglądały testy na 500 zgłoszeniach: kto przygotował dane, jakie były kryteria jakości i co z nich wynikło?",
         "Skąd decyzja, że model tylko proponuje kategorię? Jakie dane o błędach przekonały zespół?"
@@ -162,7 +162,7 @@
         "decision": "Ograniczyłem asystenta do odpowiedzi z zatwierdzonej bazy i przekazania rozmowy do konsultanta, gdy pytanie dotyczy konkretnej umowy. Dział prawny nie zgodził się na swobodne odpowiedzi.",
         "result": "Liczba połączeń na infolinię spadła o 18% w 3 miesiące. Asystent obsługuje ok. 2 tys. rozmów miesięcznie. Projekt jest w utrzymaniu, nadal go rozwijam."
       },
-      "contributionSummary": "Odpowiadał za backlog i treści zatwierdzone przez dział prawny; wdrożenie techniczne zlecono na zewnątrz. Związek z ofertą: praca z ograniczeniami regulacyjnymi i mierzenie wpływu na obsługę klienta.",
+      "contributionSummary": "Projekt to asystent na stronie banku spółdzielczego odpowiadający na powtarzalne pytania o raty i wakacje kredytowe (Azure OpenAI, baza wiedzy w SharePoint). Kandydat był właścicielem backlogu i przygotował bazę 140 pytań z odpowiedziami zatwierdzonymi przez dział prawny; architekturę i wdrożenie wykonał zewnętrzny software house. Ograniczył asystenta do zatwierdzonych odpowiedzi i przekazywania rozmowy konsultantowi przy pytaniach o konkretną umowę, bo dział prawny nie zgodził się na swobodne odpowiedzi. Efekt: o 18% mniej połączeń na infolinię w 3 miesiące, ok. 2 tys. rozmów miesięcznie. Związek z ofertą: praca z ograniczeniami regulacyjnymi i współpraca z dostawcą.",
       "contributionQuestions": [
         "Jak powstawała baza 140 pytań: kto pisał odpowiedzi, a kto je zatwierdzał i ile trwał jeden cykl?",
         "Jak wyglądała rozmowa z działem prawnym o ograniczeniu asystenta i co zostało poza zakresem?"
@@ -181,7 +181,7 @@
         "decision": "Po pilotażu zatrzymałam automatyczne odrzucanie kandydatów i zostawiłam tylko streszczenia. W testach model gorzej oceniał osoby z przerwą w zatrudnieniu.",
         "result": "Przegląd CV skrócił się o ok. 40%. Korzysta 5 rekruterek. Narzędzie działa w jednym regionie, decyzja o kolejnych jest w toku."
       },
-      "contributionSummary": "Samodzielnie zbudowała automatyzację no-code i zatrzymała ryzykowną funkcję po pilotażu. Związek z ofertą: ocena ryzyka i odpowiedzialne decyzje produktowe przy AI.",
+      "contributionSummary": "Projekt dotyczył przeglądu ok. 300 CV miesięcznie na stanowiska magazynowe w firmie logistycznej (Claude do streszczeń, Make do automatyzacji). Kandydatka zaprojektowała proces i sama zbudowała automatyzację w Make; prompt i kryteria streszczenia ustalała z dwiema rekruterkami, kodu poza konfiguracją nie pisała. Po pilotażu zatrzymała automatyczne odrzucanie kandydatów, bo model gorzej oceniał osoby z przerwą w zatrudnieniu, i zostawiła tylko streszczenia. Efekt: przegląd CV krótszy o ok. 40%, korzysta 5 rekruterek w jednym regionie. Związek z ofertą: samodzielne prototypowanie no-code i ocena ryzyka funkcji AI.",
       "contributionQuestions": [
         "Proszę pokazać, jak zbudowany był scenariusz w Make: jakie kroki i jakie błędy pojawiały się najczęściej?",
         "Jak wykryto, że model gorzej ocenia osoby z przerwą w zatrudnieniu, i kto podjął decyzję o wyłączeniu funkcji?"
@@ -208,7 +208,7 @@
         "decision": "Postanowiłam, że każdy komentarz AI sprawdza opiekun klienta przed wysyłką. Dwa pierwsze raporty miały błędne wnioski o spadkach sprzedaży.",
         "result": "Przygotowanie raportu skróciło się z 4 godzin do ok. 1,5 godziny. Korzysta 6 opiekunów klientów. Narzędzie działa od pół roku."
       },
-      "contributionSummary": "Zainicjowała projekt i przygotowała prompty; pobieranie danych zrobił analityk. Związek z ofertą: przeprowadzenie pomysłu od pilotażu do stałego użycia z kontrolą jakości.",
+      "contributionSummary": "Projekt automatyzował miesięczne raporty dla 25 klientów agencji marketingowej (Google Sheets, Looker Studio, GPT do komentarzy). Kandydatka wymyśliła projekt, przekonała zarząd do pilotażu, napisała prompty i szablon komentarza; skrypt pobierający dane napisał analityk z zespołu. Wprowadziła zasadę, że każdy komentarz AI sprawdza opiekun klienta przed wysyłką, po tym jak dwa pierwsze raporty zawierały błędne wnioski. Efekt: przygotowanie raportu skrócone z 4 do ok. 1,5 godziny, korzysta 6 opiekunów od pół roku. Związek z ofertą: doprowadzenie pomysłu od pilotażu do stałego użycia z kontrolą jakości.",
       "contributionQuestions": [
         "Jak wyglądał szablon komentarza i ile wersji promptu powstało, zanim opiekunowie zaczęli z niego korzystać?",
         "Co dokładnie było nie tak w dwóch pierwszych raportach i jak zmienił się proces po tej sytuacji?"
@@ -227,7 +227,7 @@
         "decision": "Ustawiłem próg pewności, poniżej którego faktura trafia do ręcznej weryfikacji. Bez tego ok. 7% faktur miało błędne kwoty VAT.",
         "result": "Ręczne przepisywanie spadło o ok. 70%. Korzysta 9 księgowych. System działa produkcyjnie od roku."
       },
-      "contributionSummary": "Przygotował dane testowe, reguły walidacji i szkolenie; integrację zrobił dostawca. Związek z ofertą: operacyjne wdrożenie AI z kontrolą jakości danych.",
+      "contributionSummary": "Projekt zastąpił ręczne przepisywanie faktur kosztowych w biurze rachunkowym (12 osób; Rossum z modelem językowym, integracja z Optimą). Kandydat sam przygotował zbiór 200 faktur testowych, ustawił reguły walidacji i przeszkolił zespół; integrację skonfigurował dostawca. Ustawił próg pewności, poniżej którego faktura trafia do ręcznej weryfikacji, bo bez niego ok. 7% faktur miało błędne kwoty VAT. Efekt: ręcznego przepisywania mniej o ok. 70%, korzysta 9 księgowych, system działa od roku. Związek z ofertą: operacyjne wdrożenie AI z kontrolą jakości danych.",
       "contributionQuestions": [
         "Jak dobrany był zbiór 200 faktur testowych i jakie reguły walidacji okazały się najważniejsze?",
         "Jak ustalony został próg pewności i ile faktur trafia dziś do ręcznej weryfikacji?"
@@ -254,7 +254,7 @@
         "decision": "Wyłączyłem automatyczne tworzenie zadań z notatek. Handlowcy dostawali po kilkanaście nietrafionych zadań dziennie i przestali je czytać.",
         "result": "Notatki w CRM są teraz uzupełnione po ok. 85% spotkań (wcześniej ok. 40%). Korzysta 8 handlowców. Pilotaż zakończony, rozszerzenie na cały dział od stycznia."
       },
-      "contributionSummary": "Prowadził pilotaż i ustalił zasady pracy z notatkami; konfigurację zrobił administrator. Związek z ofertą: wdrażanie narzędzi AI w zespole operacyjnym i reagowanie na uwagi użytkowników.",
+      "contributionSummary": "Projekt miał ograniczyć gubienie informacji z rozmów z klientami w dziale sprzedaży B2B (Fireflies, notatki automatycznie do HubSpota). Kandydat poprowadził pilotaż z 8 handlowcami, zebrał uwagi i opisał zasady, które notatki trafiają do CRM; integrację skonfigurował administrator HubSpota. Wyłączył automatyczne tworzenie zadań z notatek, bo handlowcy dostawali kilkanaście nietrafionych zadań dziennie i przestali je czytać. Efekt: notatki w CRM po ok. 85% spotkań zamiast ok. 40%, rozszerzenie na cały dział od stycznia. Związek z ofertą: wdrażanie narzędzi AI w zespole i reagowanie na uwagi użytkowników.",
       "contributionQuestions": [
         "Jak przebiegał pilotaż z 8 handlowcami: jakie uwagi pojawiały się najczęściej i jak je zebrano?",
         "Na jakiej podstawie wyłączone zostało automatyczne tworzenie zadań i co zastąpiło tę funkcję?"

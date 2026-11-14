@@ -65,7 +65,12 @@ export function ApplicationRecord({
           <span>
             {context} · {companyName}
           </span>
-          <span className="record-stage" tabIndex={-1} ref={statusRef}>
+          <span
+            className="record-stage"
+            data-stage={application.stage}
+            tabIndex={-1}
+            ref={statusRef}
+          >
             {stageLabels[application.stage]}
           </span>
           <MatchScore score={application.score} />

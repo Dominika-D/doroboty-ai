@@ -107,7 +107,19 @@ const firstSentence = (value: string, max = 180) => {
 };
 /** Deterministic stand-in for an AI summary. No model is called. */
 export function simulateContributionSummary(card: Contribution, jobTitle: string) {
-  return `${firstSentence(card.own)} Związek z ofertą „${jobTitle}”: ${firstSentence(card.decision)}`;
+  const sentences = (value: string, count: number, max: number) =>
+    value
+      .split(/(?<=[.!?])\s/)
+      .slice(0, count)
+      .map((sentence) => firstSentence(sentence, max))
+      .join(" ");
+  return [
+    `Projekt: ${firstSentence(card.problem, 240)}`,
+    `Własna część: ${sentences(card.own, 2, 240)}`,
+    `Kluczowa decyzja: ${firstSentence(card.decision, 240)}`,
+    `Efekt: ${sentences(card.result, 2, 200)}`,
+    `Oferta: ${jobTitle}.`,
+  ].join(" ");
 }
 /** Deterministic stand-in for two AI interview questions. No model is called. */
 export function simulateContributionQuestions(card: Contribution): string[] {
@@ -209,7 +221,7 @@ export const stages = [
 export type Stage = (typeof stages)[number];
 export const stageLabels: Record<Stage, string> = {
   submitted: "Aplikacja wysłana",
-  reviewed: "W przeglądzie",
+  reviewed: "W trakcie",
   interview_invited: "Zaproszenie na rozmowę",
   first_conversation_held: "Pierwsza rozmowa odbyta",
   continued: "Kolejny etap",

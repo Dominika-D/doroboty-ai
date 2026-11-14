@@ -69,7 +69,7 @@ export function RecruitingApplication({ application }: { application: Applicatio
             Kopiuj odpowiedzi i pytania
           </Button>
         </div>
-        <p role="status" className={contributionMessage ? "record-caption" : "sr-only"}>
+        <p role="status" className={contributionMessage ? "contribution-copy-status" : "sr-only"}>
           {contributionMessage}
         </p>
       </>

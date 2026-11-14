@@ -577,9 +577,10 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                   <Link className="candidate-card-name" to={`/app/kandydaci/${a.id}`}>
                     {a.candidateName}
                   </Link>
-                  <p className="record-caption">
-                    {a.jobTitle} · {stageLabels[a.stage]}
-                  </p>
+                  <p className="record-caption">{a.jobTitle}</p>
+                  <span className="stage-tag" data-stage={a.stage}>
+                    {stageLabels[a.stage]}
+                  </span>
                   <div className="candidate-facts">
                     <MatchScore score={a.score} />
                     <ContributionStatus application={a} now={now} />

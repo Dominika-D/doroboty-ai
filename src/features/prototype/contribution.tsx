@@ -144,7 +144,10 @@ export function ContributionView({
     <div className="contribution-card">
       {application.contributionSummary && (
         <section className="contribution-summary" aria-labelledby="contribution-summary-title">
-          <h4 id="contribution-summary-title">Podsumowanie odpowiedzi (AI, symulacja)</h4>
+          <h4 id="contribution-summary-title" className="contribution-zone-label">
+            <WandSparkles aria-hidden="true" className="size-4" />
+            Podsumowanie
+          </h4>
           <p>{application.contributionSummary}</p>
         </section>
       )}

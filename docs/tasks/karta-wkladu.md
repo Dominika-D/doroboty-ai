@@ -32,6 +32,8 @@ Data: 10 synthetic sample candidates for BrightLabs (6 with a card), hidden from
 
 ## Decisions and assumptions
 
+- Visual direction B chosen by Dominika (2026-11-14): contribution zone on each employer candidate card; "Nieuzupełnione" uses the same pink fill as "Brak odpowiedzi" (dashed style was too weak). Mockups: vault `3-Projects/DoRoboty.ai/prototypes/2026-11-14-karta-wkladu-kierunki.html`.
+
 - 4 questions, as in decision I4 (the message also mentioned 3; kept 4).
 - Filter replaces the earlier sort-by-card idea (D1 said sort); sort by Match Score stays.
 - Full answers stay available behind a disclosure for a technical reviewer.
@@ -45,7 +47,7 @@ Data: 10 synthetic sample candidates for BrightLabs (6 with a card), hidden from
 - [x] Recruiter sees status tag, filter, summary, 2 questions, full answers
 - [x] Request with 3-day deadline, answered / no-response notifications
 - [x] Existing version-1 saves/imports still load (new fields optional)
-- [ ] Desktop/mobile and keyboard checks in a browser
+- [ ] Desktop/mobile and keyboard checks in a browser (candidate list checked at 1280 and 375 px in the built-in browser; detail, form and keyboard not yet)
 - [ ] `./scripts/verify` passes (browser journeys not run yet)
 
 ## Verification (2026-11-14)

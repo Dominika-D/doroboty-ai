@@ -1,11 +1,15 @@
-import type { Ref } from "react";
+import { useState, type Ref } from "react";
 import { Link } from "react-router";
 import { Bell } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { usePrototype } from "./store";
 import {
   contributionFields,
   contributionLabels,
   contributionQuestions,
+  CONTRIBUTION_RESPONSE_DAYS,
+  contributionDeadline,
   contributionState,
   contributionStateLabels,
   type Application,
@@ -197,5 +201,85 @@ export function ContributionNotifications({
         ))}
       </ul>
     </section>
+  );
+}
+
+/**
+ * Second zone of an employer candidate card (direction B): summary preview and the first
+ * interview question, or the request action/status when the card is missing.
+ */
+export function ContributionListZone({
+  application,
+  now,
+}: {
+  application: Application;
+  now: string;
+}) {
+  const { run } = usePrototype();
+  const [message, setMessage] = useState("");
+  const state = contributionState(application, now);
+  const deadline = contributionDeadline(application);
+  const detail = `/app/kandydaci/${application.id}`;
+  const questions = application.contributionQuestions ?? [];
+  return (
+    <div className="candidate-card-contribution" data-state={state}>
+      {state === "filled" ? (
+        <>
+          <span className="contribution-zone-label">Wkład własny · podsumowanie (AI)</span>
+          <p>{application.contributionSummary}</p>
+          {questions[0] && (
+            <p className="record-caption">
+              <strong>Pytanie 1:</strong> {questions[0]}{" "}
+              {questions.length > 1 && (
+                <Link to={detail} className="contribution-more">
+                  +{questions.length - 1} pytanie
+                </Link>
+              )}
+            </p>
+          )}
+        </>
+      ) : (
+        <>
+          <span className="contribution-zone-label">Wkład własny</span>
+          {state === "missing" && (
+            <>
+              <p>Kandydat nie dodał opisu wkładu.</p>
+              {!["hired", "rejected", "withdrawn"].includes(application.stage) && (
+                <div>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      if (run({ type: "request_contribution", applicationId: application.id }))
+                        setMessage(`Wysłano prośbę do ${application.candidateName}.`);
+                    }}
+                  >
+                    Poproś o opis wkładu
+                  </Button>
+                </div>
+              )}
+              <p className="record-caption">{CONTRIBUTION_RESPONSE_DAYS} dni na odpowiedź</p>
+            </>
+          )}
+          {state === "waiting" && deadline && (
+            <p>
+              Poproszono {formatContributionDate(application.contributionRequestedAt!)}. Czekamy do{" "}
+              <strong>
+                <time dateTime={deadline}>{formatContributionDate(deadline)}</time>
+              </strong>
+              .
+            </p>
+          )}
+          {state === "no_response" && deadline && (
+            <p>
+              Brak odpowiedzi. Termin minął{" "}
+              <time dateTime={deadline}>{formatContributionDate(deadline)}</time>.
+            </p>
+          )}
+        </>
+      )}
+      <p role="status" className="sr-only">
+        {message}
+      </p>
+    </div>
   );
 }

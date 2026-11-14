@@ -35,6 +35,7 @@ import { FormSelect } from "@/components/ui/form-select";
 import {
   ContributionFields,
   ContributionNotifications,
+  ContributionListZone,
   ContributionStatus,
   formatContributionDate,
 } from "./contribution";
@@ -569,36 +570,53 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
       </div>
       <div className="mt-6 space-y-4">
         {applications.length ? (
-          applications.map((a) => (
-            <article className="prototype-panel" key={a.id}>
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <Link
-                    className="text-xl font-semibold text-[var(--gui-link)]"
-                    to={`${employer ? "/app/kandydaci" : "/app/aplikacje"}/${a.id}`}
-                  >
-                    {employer ? a.candidateName : a.jobTitle}
+          applications.map((a) =>
+            employer ? (
+              <article className="candidate-card" key={a.id}>
+                <div className="candidate-card-main">
+                  <Link className="candidate-card-name" to={`/app/kandydaci/${a.id}`}>
+                    {a.candidateName}
                   </Link>
-                  <p className="my-3 text-muted-foreground">
-                    {employer
-                      ? a.jobTitle
-                      : state.companies.find((x) => x.id === a.companyId)?.name}
+                  <p className="record-caption">
+                    {a.jobTitle} · {stageLabels[a.stage]}
                   </p>
-                  <p>{stageLabels[a.stage]}</p>
+                  <div className="candidate-facts">
+                    <MatchScore score={a.score} />
+                    <ContributionStatus application={a} now={now} />
+                  </div>
+                  <p className="candidate-card-summary">{a.summary}</p>
                 </div>
-                <div className="candidate-facts">
-                  <MatchScore score={a.score} />
-                  {employer && <ContributionStatus application={a} now={now} />}
-                  {!employer && contributionState(a, now) === "waiting" && (
-                    <span className="contribution-status" data-state="waiting">
-                      Prośba o opis wkładu do {formatContributionDate(contributionDeadline(a)!)}
-                    </span>
-                  )}
+                <ContributionListZone application={a} now={now} />
+              </article>
+            ) : (
+              <article className="prototype-panel" key={a.id}>
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <Link
+                      className="text-xl font-semibold text-[var(--gui-link)]"
+                      to={`${employer ? "/app/kandydaci" : "/app/aplikacje"}/${a.id}`}
+                    >
+                      {employer ? a.candidateName : a.jobTitle}
+                    </Link>
+                    <p className="my-3 text-muted-foreground">
+                      {employer
+                        ? a.jobTitle
+                        : state.companies.find((x) => x.id === a.companyId)?.name}
+                    </p>
+                    <p>{stageLabels[a.stage]}</p>
+                  </div>
+                  <div className="candidate-facts">
+                    <MatchScore score={a.score} />
+                    {!employer && contributionState(a, now) === "waiting" && (
+                      <span className="contribution-status" data-state="waiting">
+                        Prośba o opis wkładu do {formatContributionDate(contributionDeadline(a)!)}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              {employer && <p className="mt-4 text-muted-foreground">{a.summary}</p>}
-            </article>
-          ))
+              </article>
+            ),
+          )
         ) : (
           <Empty>Brak aplikacji spełniających kryteria.</Empty>
         )}

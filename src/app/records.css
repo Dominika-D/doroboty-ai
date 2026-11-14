@@ -356,13 +356,14 @@
 .contribution-status[data-state="filled"] {
   background: #e3f7d4;
 }
-.contribution-status:is([data-state="missing"], [data-state="waiting"]) {
+.contribution-status[data-state="waiting"] {
   border-style: dashed;
   border-color: var(--gui-text-muted);
   color: var(--gui-text-muted);
   font-weight: 400;
 }
-.contribution-status[data-state="no_response"] {
+/* Missing and no-response cards share one attention fill (Dominika, 2026-11-14). */
+.contribution-status:is([data-state="missing"], [data-state="no_response"]) {
   background: #ffe0e3;
 }
 .candidate-facts {
@@ -489,4 +490,67 @@
 .contribution-notifications a {
   font-weight: 600;
   color: var(--gui-link);
+}
+
+/* Direction B: employer candidate card with a contribution zone (Dominika, 2026-11-14). */
+.candidate-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  overflow: hidden;
+  border: 1px solid var(--gui-text);
+  border-radius: 18px;
+  background: #ffffff;
+}
+.candidate-card-main,
+.candidate-card-contribution {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 18px 20px;
+  overflow-wrap: anywhere;
+}
+.candidate-card-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--gui-text);
+}
+.candidate-card-main .candidate-facts {
+  justify-content: flex-start;
+  margin-top: 2px;
+}
+.candidate-card-summary {
+  margin-top: 4px;
+  color: var(--gui-text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.candidate-card-contribution {
+  border-left: 1px solid #d8d5d1;
+  background: #fffefa;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.candidate-card-contribution:not([data-state="filled"]) {
+  background: repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #faf9f6 10px, #faf9f6 20px);
+}
+.contribution-zone-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.contribution-more {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .candidate-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .candidate-card-contribution {
+    border-left: 0;
+    border-top: 1px solid #d8d5d1;
+  }
 }

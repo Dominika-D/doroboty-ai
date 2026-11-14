@@ -1,6 +1,7 @@
 import { useState, type Ref } from "react";
 import { Link } from "react-router";
-import { Bell, WandSparkles } from "lucide-react";
+import { Tooltip } from "@base-ui/react/tooltip";
+import { Bell, Info, WandSparkles } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "./store";
@@ -166,13 +167,29 @@ export function ContributionView({
         </section>
       )}
       <details className="contribution-details">
-        <summary>Pełne odpowiedzi kandydata</summary>
+        <summary>
+          Pełne odpowiedzi kandydata
+          <Tooltip.Root>
+            <Tooltip.Trigger
+              render={<span role="button" tabIndex={0} />}
+              className="contribution-info"
+              aria-label="Skąd pochodzi podsumowanie i pytania"
+              onClick={(event) => event.preventDefault()}
+            >
+              <Info aria-hidden="true" className="size-4" />
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+              <Tooltip.Positioner sideOffset={8}>
+                <Tooltip.Popup className="contribution-tooltip">
+                  Podsumowanie i pytania przygotowała AI przy wysłaniu odpowiedzi. Decyzję oprzyj na
+                  pełnych odpowiedziach.
+                </Tooltip.Popup>
+              </Tooltip.Positioner>
+            </Tooltip.Portal>
+          </Tooltip.Root>
+        </summary>
         <Answers card={card} />
       </details>
-      <p className="record-caption">
-        Podsumowanie i pytania przygotowała AI przy wysłaniu odpowiedzi. Decyzję oprzyj na pełnych
-        odpowiedziach.
-      </p>
       {added}
     </div>
   );

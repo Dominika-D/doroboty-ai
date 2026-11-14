@@ -541,10 +541,6 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
-.contribution-more {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
 @media (max-width: 700px) {
   .candidate-card {
     grid-template-columns: minmax(0, 1fr);

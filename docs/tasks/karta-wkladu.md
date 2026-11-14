@@ -32,7 +32,7 @@ Data: 10 synthetic sample candidates for BrightLabs (6 with a card), hidden from
 
 ## Decisions and assumptions
 
-- Visual direction B chosen by Dominika (2026-11-14): contribution zone on each employer candidate card; "Nieuzupełnione" uses the same pink fill as "Brak odpowiedzi" (dashed style was too weak). Mockups: vault `3-Projects/DoRoboty.ai/prototypes/2026-11-14-karta-wkladu-kierunki.html`.
+- Visual direction B chosen by Dominika (2026-11-14): contribution zone on each employer candidate card; "Nieuzupełnione" uses the same pink fill as "Brak odpowiedzi" (dashed style was too weak). The list zone shows only the summary; the 2 AI questions are visible only in the application detail. Request button stays pink (primary). Mockups: vault `3-Projects/DoRoboty.ai/prototypes/2026-11-14-karta-wkladu-kierunki.html`.
 
 - 4 questions, as in decision I4 (the message also mentioned 3; kept 4).
 - Filter replaces the earlier sort-by-card idea (D1 said sort); sort by Match Score stays.

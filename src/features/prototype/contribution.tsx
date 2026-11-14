@@ -205,8 +205,8 @@ export function ContributionNotifications({
 }
 
 /**
- * Second zone of an employer candidate card (direction B): summary preview and the first
- * interview question, or the request action/status when the card is missing.
+ * Second zone of an employer candidate card (direction B): summary only; interview questions
+ * stay in the application detail. Without a card: the request action or its status.
  */
 export function ContributionListZone({
   application,
@@ -219,24 +219,12 @@ export function ContributionListZone({
   const [message, setMessage] = useState("");
   const state = contributionState(application, now);
   const deadline = contributionDeadline(application);
-  const detail = `/app/kandydaci/${application.id}`;
-  const questions = application.contributionQuestions ?? [];
   return (
     <div className="candidate-card-contribution" data-state={state}>
       {state === "filled" ? (
         <>
           <span className="contribution-zone-label">Wkład własny · podsumowanie (AI)</span>
           <p>{application.contributionSummary}</p>
-          {questions[0] && (
-            <p className="record-caption">
-              <strong>Pytanie 1:</strong> {questions[0]}{" "}
-              {questions.length > 1 && (
-                <Link to={detail} className="contribution-more">
-                  +{questions.length - 1} pytanie
-                </Link>
-              )}
-            </p>
-          )}
         </>
       ) : (
         <>

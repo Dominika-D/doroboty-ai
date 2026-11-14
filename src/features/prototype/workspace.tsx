@@ -431,12 +431,11 @@ export function ApplyPage() {
             className="application-form-section application-contribution"
             aria-labelledby="application-contribution-title"
           >
-            <h3 id="application-contribution-title">Wkład własny (opcjonalnie)</h3>
+            <h3 id="application-contribution-title">Wkład własny</h3>
             <p className="application-help" id="application-contribution-help">
               Opisz jeden projekt z AI i to, co w nim zrobiłeś(-aś) samodzielnie. Pracodawca
               dostanie podsumowanie Twoich odpowiedzi. Odpowiedzi zapiszemy w Twoim profilu, żeby
-              nie pisać ich od nowa przy kolejnej aplikacji. Odpowiedz na wszystkie 4 pytania albo
-              zostaw tę część pustą.
+              nie pisać ich od nowa przy kolejnej aplikacji.
             </p>
             <ContributionFields
               idPrefix="application-contribution"

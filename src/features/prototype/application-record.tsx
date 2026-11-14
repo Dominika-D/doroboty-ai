@@ -131,7 +131,10 @@ export function ApplicationRecord({
         >
           {children}
         </RecordSheet>
-        <aside className="recruiting-margin" aria-label="Historia i podsumowanie">
+        <aside
+          className="recruiting-margin"
+          aria-label={candidate ? "Historia procesu" : "Historia i podsumowanie"}
+        >
           <section aria-labelledby="process-heading">
             <h2 id="process-heading">Historia procesu</h2>
             <ProcessTimeline
@@ -143,10 +146,13 @@ export function ApplicationRecord({
               }))}
             />
           </section>
-          <section className="record-summary" aria-labelledby="summary-heading">
-            <h2 id="summary-heading">Podsumowanie</h2>
-            <p>{application.summary}</p>
-          </section>
+          {!candidate && (
+            // Match Score summary is recruiter-only (Dominika, 2026-11-14).
+            <section className="record-summary" aria-labelledby="summary-heading">
+              <h2 id="summary-heading">Podsumowanie</h2>
+              <p>{application.summary}</p>
+            </section>
+          )}
         </aside>
       </div>
     </article>

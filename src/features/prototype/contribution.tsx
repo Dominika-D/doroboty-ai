@@ -1,6 +1,6 @@
 import { useState, type Ref } from "react";
 import { Link } from "react-router";
-import { Bell } from "lucide-react";
+import { Bell, WandSparkles } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { usePrototype } from "./store";
@@ -8,7 +8,6 @@ import {
   contributionFields,
   contributionLabels,
   contributionQuestions,
-  CONTRIBUTION_RESPONSE_DAYS,
   contributionDeadline,
   contributionState,
   contributionStateLabels,
@@ -223,7 +222,10 @@ export function ContributionListZone({
     <div className="candidate-card-contribution" data-state={state}>
       {state === "filled" ? (
         <>
-          <span className="contribution-zone-label">Wkład własny · podsumowanie (AI)</span>
+          <span className="contribution-zone-label">
+            <WandSparkles aria-hidden="true" className="size-4" />
+            Podsumowanie
+          </span>
           <p>{application.contributionSummary}</p>
         </>
       ) : (
@@ -245,7 +247,6 @@ export function ContributionListZone({
                   </Button>
                 </div>
               )}
-              <p className="record-caption">{CONTRIBUTION_RESPONSE_DAYS} dni na odpowiedź</p>
             </>
           )}
           {state === "waiting" && deadline && (

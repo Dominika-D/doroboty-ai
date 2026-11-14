@@ -536,6 +536,9 @@
   background: repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #faf9f6 10px, #faf9f6 20px);
 }
 .contribution-zone-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.05em;

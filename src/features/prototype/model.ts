@@ -2,6 +2,7 @@ import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
 import contributionSamples from "./data/contribution-samples.json" with { type: "json" };
+import e8Data from "./data/e8-scenario.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
 
 const id = z
@@ -282,6 +283,9 @@ export const stateSchema = z
     applications: z.array(applicationSchema).max(2000),
     saved: z.array(z.object({ candidateId: id, jobId: id })).max(5000),
     drafts: z.array(draftSchema).max(1000),
+    /** Recruiter test E8: A hides the contribution card, B shows it. Absent = normal app (B). */
+    testVariant: z.enum(["A", "B"]).optional(),
+    testSet: z.enum(["1", "2"]).optional(),
   })
   .superRefine((s, ctx) => {
     const problem = (message: string) => ctx.addIssue({ code: "custom", message });
@@ -457,6 +461,98 @@ export function sortApplications<T extends { score: number; events: { at: string
   const byDate = (a: T, b: T) => submittedAt(b).localeCompare(submittedAt(a));
   const byScore = (a: T, b: T) => b.score - a.score || byDate(a, b);
   return [...list].sort(sort === "score" ? byScore : byDate);
+}
+export type TestSet = "1" | "2";
+export type TestVariant = "A" | "B";
+/** Whether contribution features are visible (hidden only in test variant A). */
+export function showsContribution(state: Pick<State, "testVariant">) {
+  return state.testVariant !== "A";
+}
+/**
+ * Test E8 scenario: one set of 10 case applications (June 2026) for one job of the
+ * BrightLabs employer persona. Cards come from the candidate's text before the writing
+ * assistant; summaries and questions were prepared with an AI model before the test.
+ * Company decisions are not part of the app; the moderator keeps them separately.
+ */
+export function e8State(set: TestSet, variant: TestVariant): State {
+  const base = initialState();
+  const data = e8Data[set];
+  const employer = base.people.find((x) => x.id === "employer-brightlabs")!;
+  const company = base.companies.find((x) => x.id === employer.companyId)!;
+  employer.headline = `Rekruterka · ${data.company.name}`;
+  Object.assign(company, {
+    name: data.company.name,
+    summary: data.company.summary,
+    description: data.company.description,
+  });
+  const template = base.jobs.find((x) => x.companyId === company.id)!;
+  const job = {
+    ...template,
+    id: `e8-job-${set}`,
+    slug: `e8-zestaw-${set}`,
+    title: data.job.title,
+    summary: `${data.company.summary} Rola z kategorii Lead.`,
+    description:
+      "Potrzebujemy osoby, która potrafi rozmawiać o swojej dotychczasowej pracy, współpracować z innymi i wyjaśnić decyzje. Nie oczekujemy znajomości wszystkich narzędzi z rynku. Ważne jest rozsądne dobieranie sposobu pracy do problemu. Na rozmowie możemy wrócić do jednego z opisanych projektów.",
+    category: "lead" as const,
+    remoteStatus: data.job.remoteStatus as "hybrid" | "remote",
+    locations: data.job.locations,
+    seniority: "mid" as const,
+    contract: "b2b" as const,
+    salaryMin: undefined,
+    salaryMax: undefined,
+    salaryCurrency: undefined,
+    salaryPeriod: undefined,
+    salaryKind: undefined,
+    publishedAt: "2026-06-01T08:00:00.000Z",
+    expiryAt: "2027-06-30T08:00:00.000Z",
+  };
+  const people = data.applications.map((a) => ({
+    id: `candidate-${a.id}`,
+    role: "candidate" as const,
+    sample: true,
+    name: a.name,
+    headline: "Kandydat (dane testowe)",
+    bio: "Zgłoszenie z danych casu, czerwiec 2026.",
+    location: "Polska",
+    cv: a.cv,
+    exampleScore: a.score,
+    exampleSummary: "",
+  }));
+  const applications: Application[] = data.applications.map((a) => ({
+    id: a.id,
+    candidateId: `candidate-${a.id}`,
+    jobId: job.id,
+    companyId: company.id,
+    jobTitle: job.title,
+    candidateName: a.name,
+    cv: a.cv,
+    answer: a.answer,
+    sourceNotes: "",
+    generatedAnswer: "",
+    score: a.score,
+    summary: "",
+    ...("contribution" in a
+      ? {
+          contribution: a.contribution,
+          contributionSummary: a.contributionSummary,
+          contributionQuestions: a.contributionQuestions,
+        }
+      : {}),
+    stage: "submitted",
+    events: [{ stage: "submitted", at: a.submittedAt, note: "" }],
+  }));
+  return stateSchema.parse({
+    ...base,
+    activePersonId: employer.id,
+    jobs: [job, ...base.jobs.filter((x) => x.companyId !== company.id)],
+    people: [...base.people.filter((x) => !x.sample), ...people],
+    applications,
+    saved: [],
+    drafts: [],
+    testVariant: variant,
+    testSet: set,
+  });
 }
 export function publishedJobs(state: State): JobWithCompany[] {
   return state.jobs

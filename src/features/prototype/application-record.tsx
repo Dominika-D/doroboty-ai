@@ -20,6 +20,7 @@ export function ApplicationRecord({
   audience,
   history,
   statusRef,
+  showContribution = true,
   contribution,
   children,
   footer,
@@ -41,6 +42,8 @@ export function ApplicationRecord({
   audience: "candidate" | "employer";
   history: RecordEvent[];
   statusRef?: Ref<HTMLSpanElement>;
+  /** False in test variant A: hides the contribution status tag. */
+  showContribution?: boolean;
   /** Content of the "Wkład własny" tab; the role controller owns its actions. */
   contribution?: ReactNode;
   children?: ReactNode;
@@ -74,7 +77,7 @@ export function ApplicationRecord({
             {stageLabels[application.stage]}
           </span>
           <MatchScore score={application.score} />
-          {!candidate && <ContributionStatus application={application} />}
+          {!candidate && showContribution && <ContributionStatus application={application} />}
           {submitted && (
             <span>
               Złożona:{" "}
@@ -146,7 +149,7 @@ export function ApplicationRecord({
               }))}
             />
           </section>
-          {!candidate && (
+          {!candidate && application.summary && (
             // Match Score summary is recruiter-only (Dominika, 2026-11-14).
             <section className="record-summary" aria-labelledby="summary-heading">
               <h2 id="summary-heading">Podsumowanie</h2>

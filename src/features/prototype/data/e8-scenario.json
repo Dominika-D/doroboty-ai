@@ -1,0 +1,322 @@
+{
+  "1": {
+    "company": {
+      "name": "Punkt Labs",
+      "summary": "Rozwiązania AI wspierające kontrolę dokumentacji.",
+      "description": "Rozwijamy rozwiązania AI wspierające obszar kontroli dokumentacji i pracujemy nad ich wdrożeniami u klientów."
+    },
+    "job": {
+      "title": "Lider/ka wdrożeń AI – kontrola dokumentacji",
+      "remoteStatus": "hybrid",
+      "locations": ["Wrocław"]
+    },
+    "applications": [
+      {
+        "id": "e8-1-01",
+        "name": "Łukasz Grabowski",
+        "score": 76,
+        "submittedAt": "2026-06-28T23:46:47.000Z",
+        "answer": "Chodzi o projekt z obszaru: obsługa zgłoszeń. Zarządzałem kolejnością inicjatyw w zatwierdzonym budżecie. Ustalaliśmy kryteria zatrzymania i dalszego finansowania. Mogę omówić przykład i rolę pozostałych osób. Chcę znać pierwszy projekt oraz dostęp do danych. Zakres wdrożenia był szerszy niż moja praca. Materiały i termin rozpoczęcia musimy uzgodnić.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: obsługa zgłoszeń. Zarządzałem kolejnością inicjatyw w zatwierdzonym budżecie. Ustalaliśmy kryteria zatrzymania i dalszego finansowania. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: obsługa zgłoszeń.",
+          "own": "Zarządzałem kolejnością inicjatyw w zatwierdzonym budżecie.",
+          "decision": "Ustalaliśmy kryteria zatrzymania i dalszego finansowania.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze obsługi zgłoszeń. Jego część to zarządzanie kolejnością inicjatyw w ramach zatwierdzonego budżetu. Kryteria zatrzymania i dalszego finansowania ustalał razem z innymi, więc z karty nie wynika, którą decyzję podjął sam. Nie opisał wyniku ani statusu projektu. Związek z ofertą: doświadczenie w porządkowaniu wdrożeń i w decyzjach o ich kontynuacji.",
+        "contributionQuestions": [
+          "Jak zakończył się projekt w obszarze obsługi zgłoszeń? Kto z niego dziś korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Którą część kryteriów zatrzymania i dalszego finansowania zaproponowałeś sam, a którą ustalił zespół? (dotyczy: Moja decyzja)"
+        ]
+      },
+      {
+        "id": "e8-1-02",
+        "name": "Krzysztof Jabłoński",
+        "score": 79,
+        "submittedAt": "2026-06-24T22:28:12.000Z",
+        "answer": "W dotychczasowych projektach rozwijałem umiejętności potrzebne do wdrożeń AI, w tym w obszarze: dokumenty operacyjne. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: dokumenty operacyjne. Miałem mandat do ustalenia zakresu pierwszego wdrożenia. Opisałem kompromis między kosztem a pokryciem potrzeb zespołów. Najpierw sprawdziliśmy mały fragment zadania. Dopiero później zdecydowaliśmy, co rozwijać. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: dokumenty operacyjne.",
+          "own": "Miałem mandat do ustalenia zakresu pierwszego wdrożenia.",
+          "decision": "Opisałem kompromis między kosztem a pokryciem potrzeb zespołów.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze dokumentów operacyjnych. Miał mandat do ustalenia zakresu pierwszego wdrożenia i opisał kompromis między kosztem a tym, w jakim stopniu rozwiązanie pokryje potrzeby zespołów. Nie opisał wyniku ani statusu projektu. Związek z ofertą: samodzielne decyzje o zakresie wdrożenia, o które ogłoszenie pyta wprost („wyjaśnić decyzje”).",
+        "contributionQuestions": [
+          "Co stało się z pierwszym wdrożeniem w obszarze dokumentów operacyjnych? Kto z niego korzysta i czy działa do dziś? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Jak doszedłeś do kompromisu między kosztem a potrzebami zespołów? Z kim go uzgadniałeś i co zostało poza zakresem? (dotyczy: Moja decyzja)"
+        ]
+      },
+      {
+        "id": "e8-1-03",
+        "name": "Rafał Majewski",
+        "score": 66,
+        "submittedAt": "2026-06-29T17:39:26.000Z",
+        "answer": "Moje doświadczenie w projektach AI odpowiada zadaniom opisanym w ogłoszeniu dla obszaru: planowanie dostaw. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy. Miałem mandat do ustalenia zakresu pierwszego wdrożenia. Opisałem kompromis między kosztem a pokryciem potrzeb zespołów.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: planowanie dostaw. Miałem mandat do ustalenia zakresu pierwszego wdrożenia. Opisałem kompromis między kosztem a pokryciem potrzeb zespołów. Najpierw sprawdziliśmy mały fragment zadania. Dopiero później zdecydowaliśmy, co rozwijać. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      },
+      {
+        "id": "e8-1-04",
+        "name": "Sebastian Olszewski",
+        "score": 96,
+        "submittedAt": "2026-06-27T22:43:38.000Z",
+        "answer": "W dotychczasowych projektach rozwijałem umiejętności potrzebne do wdrożeń AI, w tym w obszarze: kontrola dokumentacji. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: kontrola dokumentacji. Koordynowałem kalendarz warsztatów i zbierałem pomysły. Decyzję o rozpoczęciu wdrożenia podejmował sponsor. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: kontrola dokumentacji.",
+          "own": "Koordynowałem kalendarz warsztatów i zbierałem pomysły.",
+          "decision": "Decyzję o rozpoczęciu wdrożenia podejmował sponsor.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze kontroli dokumentacji, tym samym co w ogłoszeniu. Koordynował kalendarz warsztatów i zbierał pomysły. Decyzję o rozpoczęciu wdrożenia podejmował sponsor, więc karta nie opisuje decyzji kandydata. Nie opisał wyniku ani statusu projektu.",
+        "contributionQuestions": [
+          "Czy w tym projekcie była decyzja, którą podjąłeś sam? Jeśli tak, jaka i dlaczego? (dotyczy: Moja decyzja)",
+          "Co stało się z pomysłami zebranymi na warsztatach? Które trafiły do wdrożenia i kto z nich korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)"
+        ]
+      },
+      {
+        "id": "e8-1-05",
+        "name": "Dawid Pietrzak",
+        "score": 98,
+        "submittedAt": "2026-06-27T10:47:11.000Z",
+        "answer": "Łączę praktyczną znajomość rozwiązań AI z pracą zespołową i orientacją na wynik w obszarze: katalog produktów. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: katalog produktów. Zrobiłem przegląd narzędzi i rekomendację. Nie miałem mandatu do zmiany kolejności prac zespołów. Najpierw sprawdziliśmy mały fragment zadania. Dopiero później zdecydowaliśmy, co rozwijać. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: katalog produktów.",
+          "own": "Zrobiłem przegląd narzędzi i rekomendację.",
+          "decision": "Nie miałem mandatu do zmiany kolejności prac zespołów.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze katalogu produktów. Zrobił przegląd narzędzi i przygotował rekomendację. Zaznacza, że nie miał mandatu do zmiany kolejności prac zespołów. Nie opisał, czy rekomendację przyjęto, ani wyniku projektu. Związek z ofertą: dobór narzędzi do problemu, o którym mówi ogłoszenie.",
+        "contributionQuestions": [
+          "Co stało się z twoją rekomendacją narzędzi? Czy została przyjęta i kto dziś z nich korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Jak przygotowałeś przegląd narzędzi: jakie kryteria wybrałeś i z kim je ustalałeś? (dotyczy: Moja część)"
+        ]
+      },
+      {
+        "id": "e8-1-06",
+        "name": "Wojciech Czarnecki",
+        "score": 81,
+        "submittedAt": "2026-06-22T14:37:13.000Z",
+        "answer": "Łączę praktyczną znajomość rozwiązań AI z pracą zespołową i orientacją na wynik w obszarze: planowanie dostaw. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: planowanie dostaw. Miałem mandat do ustalenia zakresu pierwszego wdrożenia. Opisałem kompromis między kosztem a pokryciem potrzeb zespołów. Pracowaliśmy w kilkuosobowym zespole, równolegle z bieżącymi zadaniami operacyjnymi. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: planowanie dostaw.",
+          "own": "Miałem mandat do ustalenia zakresu pierwszego wdrożenia.",
+          "decision": "Opisałem kompromis między kosztem a pokryciem potrzeb zespołów.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze planowania dostaw. Miał mandat do ustalenia zakresu pierwszego wdrożenia i opisał kompromis między kosztem a pokryciem potrzeb zespołów. Nie opisał wyniku ani statusu projektu. Związek z ofertą: samodzielne decyzje o zakresie wdrożenia.",
+        "contributionQuestions": [
+          "Co stało się z pierwszym wdrożeniem w planowaniu dostaw? Czy działa i kto z niego korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Jakie potrzeby zespołów zostały poza pierwszym wdrożeniem i dlaczego tak zdecydowałeś? (dotyczy: Moja decyzja)"
+        ]
+      },
+      {
+        "id": "e8-1-07",
+        "name": "Marcin Kaczmarek",
+        "score": 71,
+        "submittedAt": "2026-06-29T19:12:52.000Z",
+        "answer": "Chodzi o projekt z obszaru: obsługa zgłoszeń. Koordynowałem kalendarz warsztatów i zbierałem pomysły. Decyzję o rozpoczęciu wdrożenia podejmował sponsor. Mogę omówić przykład i rolę pozostałych osób. Chcę znać pierwszy projekt oraz dostęp do danych. Zakres wdrożenia był szerszy niż moja praca. Materiały i termin rozpoczęcia musimy uzgodnić.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: obsługa zgłoszeń. Koordynowałem kalendarz warsztatów i zbierałem pomysły. Decyzję o rozpoczęciu wdrożenia podejmował sponsor. Najpierw sprawdziliśmy mały fragment zadania. Dopiero później zdecydowaliśmy, co rozwijać. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: obsługa zgłoszeń.",
+          "own": "Koordynowałem kalendarz warsztatów i zbierałem pomysły.",
+          "decision": "Decyzję o rozpoczęciu wdrożenia podejmował sponsor.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze obsługi zgłoszeń. Koordynował kalendarz warsztatów i zbierał pomysły. Decyzję o rozpoczęciu wdrożenia podejmował sponsor, więc karta nie opisuje decyzji kandydata. Nie opisał wyniku ani statusu projektu. Związek z ofertą: ogłoszenie pyta o wyjaśnianie własnych decyzji, a karta opisuje zadania organizacyjne.",
+        "contributionQuestions": [
+          "Czy w tym projekcie była decyzja, za którą odpowiadałeś? Jak ją podjąłeś? (dotyczy: Moja decyzja)",
+          "Co powstało po warsztatach i kto z tego korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)"
+        ]
+      },
+      {
+        "id": "e8-1-08",
+        "name": "Szymon Lewandowski",
+        "score": 80,
+        "submittedAt": "2026-06-28T17:22:27.000Z",
+        "answer": "Moje doświadczenie w projektach AI odpowiada zadaniom opisanym w ogłoszeniu dla obszaru: kontrola dokumentacji. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: kontrola dokumentacji. Miałem mandat do ustalenia zakresu pierwszego wdrożenia. Opisałem kompromis między kosztem a pokryciem potrzeb zespołów. Najpierw sprawdziliśmy mały fragment zadania. Dopiero później zdecydowaliśmy, co rozwijać. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      },
+      {
+        "id": "e8-1-09",
+        "name": "Jakub Dudek",
+        "score": 79,
+        "submittedAt": "2026-06-22T07:17:32.000Z",
+        "answer": "Moje doświadczenie w projektach AI odpowiada zadaniom opisanym w ogłoszeniu dla obszaru: planowanie dostaw. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy. Prowadziłem prezentację planu. Zakres odpowiedzialności i decyzje budżetowe należały do innej osoby.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: planowanie dostaw. Prowadziłem prezentację planu. Zakres odpowiedzialności i decyzje budżetowe należały do innej osoby. Pracowaliśmy w kilkuosobowym zespole, równolegle z bieżącymi zadaniami operacyjnymi. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      },
+      {
+        "id": "e8-1-10",
+        "name": "Grzegorz Sowa",
+        "score": 64,
+        "submittedAt": "2026-06-26T07:50:22.000Z",
+        "answer": "Chodzi o projekt z obszaru: katalog produktów. Prowadziłem uzgodnienia między właścicielami zespołów i decyzję o ograniczeniu zakresu. Sponsor potwierdza odpowiedzialność. Mogę omówić przykład i rolę pozostałych osób. Chcę znać pierwszy projekt oraz dostęp do danych. Zakres wdrożenia był szerszy niż moja praca. Materiały i termin rozpoczęcia musimy uzgodnić.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: katalog produktów. Prowadziłem uzgodnienia między właścicielami zespołów i decyzję o ograniczeniu zakresu. Sponsor potwierdza odpowiedzialność. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      }
+    ]
+  },
+  "2": {
+    "company": {
+      "name": "Most Digital",
+      "summary": "Zespół rozwijający zastosowania AI w katalogu produktów.",
+      "description": "Rozwijamy zespół zajmujący się zastosowaniami AI w obszarze katalogu produktów."
+    },
+    "job": {
+      "title": "Lider/ka wdrożeń AI – katalog produktów",
+      "remoteStatus": "remote",
+      "locations": ["Wrocław"]
+    },
+    "applications": [
+      {
+        "id": "e8-2-01",
+        "name": "Piotr Zawadzki",
+        "score": 98,
+        "submittedAt": "2026-06-25T05:51:12.000Z",
+        "answer": "W dotychczasowych projektach rozwijałem umiejętności potrzebne do wdrożeń AI, w tym w obszarze: wiedza zespołu. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy. Zarządzałem kolejnością inicjatyw w zatwierdzonym budżecie. Ustalaliśmy kryteria zatrzymania i dalszego finansowania.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: wiedza zespołu. Zarządzałem kolejnością inicjatyw w zatwierdzonym budżecie. Ustalaliśmy kryteria zatrzymania i dalszego finansowania. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: wiedza zespołu.",
+          "own": "Zarządzałem kolejnością inicjatyw w zatwierdzonym budżecie.",
+          "decision": "Ustalaliśmy kryteria zatrzymania i dalszego finansowania.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze wiedzy zespołu. Jego część to zarządzanie kolejnością inicjatyw w ramach zatwierdzonego budżetu. Kryteria zatrzymania i dalszego finansowania ustalał razem z innymi, więc z karty nie wynika, którą decyzję podjął sam. Nie opisał wyniku ani statusu projektu. Związek z ofertą: porządkowanie wdrożeń i decyzje o ich kontynuacji.",
+        "contributionQuestions": [
+          "Jak zakończył się projekt w obszarze wiedzy zespołu? Kto z niego dziś korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Którą część kryteriów zatrzymania i finansowania zaproponowałeś sam, a którą ustalił zespół? (dotyczy: Moja decyzja)"
+        ]
+      },
+      {
+        "id": "e8-2-02",
+        "name": "Kamil Wieczorek",
+        "score": 73,
+        "submittedAt": "2026-06-18T16:24:21.000Z",
+        "answer": "W dotychczasowych projektach rozwijałem umiejętności potrzebne do wdrożeń AI, w tym w obszarze: dokumenty operacyjne. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: dokumenty operacyjne. Miałem mandat do ustalenia zakresu pierwszego wdrożenia. Opisałem kompromis między kosztem a pokryciem potrzeb zespołów. Najpierw sprawdziliśmy mały fragment zadania. Dopiero później zdecydowaliśmy, co rozwijać. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: dokumenty operacyjne.",
+          "own": "Miałem mandat do ustalenia zakresu pierwszego wdrożenia.",
+          "decision": "Opisałem kompromis między kosztem a pokryciem potrzeb zespołów.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze dokumentów operacyjnych. Miał mandat do ustalenia zakresu pierwszego wdrożenia i opisał kompromis między kosztem a pokryciem potrzeb zespołów. Nie opisał wyniku ani statusu projektu. Związek z ofertą: samodzielne decyzje o zakresie wdrożenia, o których ogłoszenie chce rozmawiać.",
+        "contributionQuestions": [
+          "Co stało się z pierwszym wdrożeniem w obszarze dokumentów operacyjnych? Kto z niego korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Jak doszedłeś do kompromisu między kosztem a potrzebami zespołów i z kim go uzgadniałeś? (dotyczy: Moja decyzja)"
+        ]
+      },
+      {
+        "id": "e8-2-03",
+        "name": "Artur Michalski",
+        "score": 79,
+        "submittedAt": "2026-06-22T20:32:32.000Z",
+        "answer": "W dotychczasowych projektach rozwijałem umiejętności potrzebne do wdrożeń AI, w tym w obszarze: kontrola dokumentacji. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy. Przygotowywałem materiały do spotkań. Priorytety i budżet ustalał dyrektor.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: kontrola dokumentacji. Przygotowywałem materiały do spotkań. Priorytety i budżet ustalał dyrektor. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      },
+      {
+        "id": "e8-2-04",
+        "name": "Filip Baran",
+        "score": 82,
+        "submittedAt": "2026-06-23T23:17:24.000Z",
+        "answer": "Chodzi o projekt z obszaru: dokumenty operacyjne. Przygotowywałem materiały do spotkań. Priorytety i budżet ustalał dyrektor. Mogę omówić przykład i rolę pozostałych osób. Chcę znać pierwszy projekt oraz dostęp do danych. Zakres wdrożenia był szerszy niż moja praca. Materiały i termin rozpoczęcia musimy uzgodnić.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: dokumenty operacyjne. Przygotowywałem materiały do spotkań. Priorytety i budżet ustalał dyrektor. Pracowaliśmy w kilkuosobowym zespole, równolegle z bieżącymi zadaniami operacyjnymi. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: dokumenty operacyjne.",
+          "own": "Przygotowywałem materiały do spotkań.",
+          "decision": "Priorytety i budżet ustalał dyrektor.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze dokumentów operacyjnych. Przygotowywał materiały do spotkań. Priorytety i budżet ustalał dyrektor, więc karta nie opisuje decyzji kandydata. Nie opisał wyniku ani statusu projektu.",
+        "contributionQuestions": [
+          "Czy w tym projekcie była decyzja, którą podjąłeś sam? Jaka i dlaczego? (dotyczy: Moja decyzja)",
+          "Do czego służyły materiały, które przygotowywałeś, i co z nich wynikło dla projektu? (dotyczy: Wynik, użytkownicy i status – brak w karcie)"
+        ]
+      },
+      {
+        "id": "e8-2-05",
+        "name": "Hubert Sadowski",
+        "score": 82,
+        "submittedAt": "2026-06-22T11:53:43.000Z",
+        "answer": "Chodzi o projekt z obszaru: planowanie dostaw. Uzgadniałem priorytety i kryteria decyzji ze sponsorem. Budżet zatwierdzał zarząd, a ja odpowiadałem za kolejność prac. Mogę omówić przykład i rolę pozostałych osób. Chcę znać pierwszy projekt oraz dostęp do danych. Zakres wdrożenia był szerszy niż moja praca. Materiały i termin rozpoczęcia musimy uzgodnić.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: planowanie dostaw. Uzgadniałem priorytety i kryteria decyzji ze sponsorem. Budżet zatwierdzał zarząd, a ja odpowiadałem za kolejność prac. Pracowaliśmy w kilkuosobowym zespole, równolegle z bieżącymi zadaniami operacyjnymi. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: planowanie dostaw.",
+          "own": "Uzgadniałem priorytety i kryteria decyzji ze sponsorem.",
+          "decision": "Budżet zatwierdzał zarząd, a ja odpowiadałem za kolejność prac.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze planowania dostaw. Uzgadniał priorytety i kryteria decyzji ze sponsorem i odpowiadał za kolejność prac; budżet zatwierdzał zarząd. Nie opisał wyniku ani statusu projektu. Związek z ofertą: współpraca z decydentami i odpowiedzialność za uzgodnione zadania.",
+        "contributionQuestions": [
+          "Jak zakończył się projekt w planowaniu dostaw? Kto z niego korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Jak ustalałeś kolejność prac, gdy priorytety różnych osób się różniły? Opisz jedną sytuację. (dotyczy: Moja decyzja)"
+        ]
+      },
+      {
+        "id": "e8-2-06",
+        "name": "Norbert Kubacki",
+        "score": 96,
+        "submittedAt": "2026-06-29T14:01:03.000Z",
+        "answer": "Łączę praktyczną znajomość rozwiązań AI z pracą zespołową i orientacją na wynik w obszarze: kontrola dokumentacji. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy. Prowadziłem prezentację planu. Zakres odpowiedzialności i decyzje budżetowe należały do innej osoby.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: kontrola dokumentacji. Prowadziłem prezentację planu. Zakres odpowiedzialności i decyzje budżetowe należały do innej osoby. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: kontrola dokumentacji.",
+          "own": "Prowadziłem prezentację planu.",
+          "decision": "Zakres odpowiedzialności i decyzje budżetowe należały do innej osoby.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze kontroli dokumentacji. Prowadził prezentację planu. Zakres odpowiedzialności i decyzje budżetowe należały do innej osoby, więc karta nie opisuje decyzji kandydata. Nie opisał wyniku ani statusu projektu.",
+        "contributionQuestions": [
+          "Kto przygotował plan, który prezentowałeś, i jaka była w nim twoja część? (dotyczy: Moja część)",
+          "Czy w tym projekcie była decyzja, którą podjąłeś sam? (dotyczy: Moja decyzja)"
+        ]
+      },
+      {
+        "id": "e8-2-07",
+        "name": "Oskar Wilk",
+        "score": 68,
+        "submittedAt": "2026-06-15T22:48:07.000Z",
+        "answer": "Chodzi o projekt z obszaru: wiedza zespołu. Prowadziłem uzgodnienia między właścicielami zespołów i decyzję o ograniczeniu zakresu. Sponsor potwierdza odpowiedzialność. Mogę omówić przykład i rolę pozostałych osób. Chcę znać pierwszy projekt oraz dostęp do danych. Zakres wdrożenia był szerszy niż moja praca. Materiały i termin rozpoczęcia musimy uzgodnić.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: wiedza zespołu. Prowadziłem uzgodnienia między właścicielami zespołów i decyzję o ograniczeniu zakresu. Sponsor potwierdza odpowiedzialność. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować.",
+        "contribution": {
+          "problem": "Projekt z obszaru: wiedza zespołu.",
+          "own": "Prowadziłem uzgodnienia między właścicielami zespołów i decyzję o ograniczeniu zakresu.",
+          "decision": "Sponsor potwierdza odpowiedzialność.",
+          "result": ""
+        },
+        "contributionSummary": "Kandydat opisuje projekt AI w obszarze wiedzy zespołu. Prowadził uzgodnienia między właścicielami zespołów i decyzję o ograniczeniu zakresu; odpowiedzialność potwierdza sponsor. Nie opisał wyniku ani statusu projektu. Związek z ofertą: wyjaśnianie decyzji o zakresie i współpraca z zespołami.",
+        "contributionQuestions": [
+          "Jak zakończył się projekt po ograniczeniu zakresu? Kto z niego korzysta? (dotyczy: Wynik, użytkownicy i status – brak w karcie)",
+          "Jak przebiegały uzgodnienia z właścicielami zespołów i dlaczego zakres został ograniczony? (dotyczy: Moja część)"
+        ]
+      },
+      {
+        "id": "e8-2-08",
+        "name": "Patryk Górski",
+        "score": 63,
+        "submittedAt": "2026-06-23T01:20:18.000Z",
+        "answer": "Chodzi o projekt z obszaru: wiedza zespołu. Koordynowałem kalendarz warsztatów i zbierałem pomysły. Decyzję o rozpoczęciu wdrożenia podejmował sponsor. Mogę omówić przykład i rolę pozostałych osób. Chcę znać pierwszy projekt oraz dostęp do danych. Zakres wdrożenia był szerszy niż moja praca. Materiały i termin rozpoczęcia musimy uzgodnić.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: wiedza zespołu. Koordynowałem kalendarz warsztatów i zbierałem pomysły. Decyzję o rozpoczęciu wdrożenia podejmował sponsor. Najpierw sprawdziliśmy mały fragment zadania. Dopiero później zdecydowaliśmy, co rozwijać. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      },
+      {
+        "id": "e8-2-09",
+        "name": "Robert Szulc",
+        "score": 76,
+        "submittedAt": "2026-06-18T03:19:22.000Z",
+        "answer": "Łączę praktyczną znajomość rozwiązań AI z pracą zespołową i orientacją na wynik w obszarze: wiedza zespołu. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: wiedza zespołu. Prowadziłem uzgodnienia między właścicielami zespołów i decyzję o ograniczeniu zakresu. Sponsor potwierdza odpowiedzialność. Pracowaliśmy w kilkuosobowym zespole, równolegle z bieżącymi zadaniami operacyjnymi. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      },
+      {
+        "id": "e8-2-10",
+        "name": "Daniel Kozłowski",
+        "score": 93,
+        "submittedAt": "2026-06-28T20:25:29.000Z",
+        "answer": "W dotychczasowych projektach rozwijałem umiejętności potrzebne do wdrożeń AI, w tym w obszarze: katalog produktów. Uczestniczyłem w przygotowaniu i doskonaleniu rozwiązania, uwzględniając potrzeby użytkowników oraz ograniczenia danych. Potrafię współpracować z osobami technicznymi i biznesowymi, porządkować zadania i omawiać kolejne kroki. Znam znaczenie sprawdzania efektów i odpowiedzialności za uzgodniony zakres. Chętnie przedstawię konkretny przykład oraz sposób pracy zespołu. Interesuje mnie możliwość dalszego rozwoju i pracy przy wdrożeniu odpowiadającym rzeczywistym potrzebom organizacji. Warunki rozpoczęcia współpracy oraz dostępność materiałów projektowych chciałbym uzgodnić podczas rozmowy. Zrobiłem przegląd narzędzi i rekomendację. Nie miałem mandatu do zmiany kolejności prac zespołów.",
+        "cv": "Przykład mojej pracy dotyczy obszaru: katalog produktów. Zrobiłem przegląd narzędzi i rekomendację. Nie miałem mandatu do zmiany kolejności prac zespołów. Projekt miał ograniczony zakres i trwał kilka iteracji. Część początkowych pomysłów odłożyliśmy. Mogę wyjaśnić swój zakres oraz pracę pozostałych osób. Nie wszystkie materiały można opublikować."
+      }
+    ]
+  }
+}

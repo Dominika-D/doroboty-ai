@@ -8,6 +8,7 @@ import {
   contributionNotifications,
   contributionState,
   nextStages,
+  showsContribution,
   stageLabels,
   type Application,
 } from "./model";
@@ -132,7 +133,8 @@ export function RecruitingApplication({ application }: { application: Applicatio
         audience="employer"
         history={application.events}
         statusRef={statusRef}
-        contribution={contribution}
+        showContribution={showsContribution(state)}
+        contribution={showsContribution(state) ? contribution : undefined}
         footer={
           availableStages.length > 0 ? (
             <>

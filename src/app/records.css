@@ -583,3 +583,6 @@
 .record-stage[data-stage="interview_invited"] {
   background: #c9f2c4;
 }
+.candidate-card:not([data-contribution]) {
+  grid-template-columns: minmax(0, 1fr);
+}

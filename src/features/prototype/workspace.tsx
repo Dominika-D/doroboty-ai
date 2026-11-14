@@ -30,6 +30,7 @@ import {
   contributionDeadline,
   contributionLabels,
   type ContributionFilter,
+  showsContribution,
 } from "./model";
 import { FormSelect } from "@/components/ui/form-select";
 import {
@@ -133,7 +134,7 @@ export function WorkspaceHome() {
   return (
     <>
       <PageTitle>Witaj, {person.name.split(" ")[0]}</PageTitle>
-      {!candidate && (
+      {!candidate && showsContribution(state) && (
         <ContributionNotifications
           notifications={contributionNotifications(state, person.companyId)}
         />
@@ -517,6 +518,7 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortKey>("newest");
   const [cardFilter, setCardFilter] = useState<ContributionFilter>("all");
+  const showContribution = showsContribution(state);
   const now = new Date().toISOString();
   const [params] = useSearchParams();
   const filtered = state.applications.filter(
@@ -527,7 +529,10 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
         .includes(query.toLocaleLowerCase("pl")),
   );
   const applications = employer
-    ? sortApplications(filterByContribution(filtered, cardFilter), sort)
+    ? sortApplications(
+        showContribution ? filterByContribution(filtered, cardFilter) : filtered,
+        sort,
+      )
     : filtered;
   return (
     <>
@@ -537,7 +542,7 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
           <CheckCircle2 className="inline size-5" /> Aplikacja została wysłana.
         </Notice>
       )}
-      {employer && (
+      {employer && showContribution && (
         <ContributionNotifications
           notifications={contributionNotifications(state, person.companyId, now)}
         />
@@ -548,14 +553,16 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
         </Field>
         {employer && (
           <>
-            <Field label="Wkład własny">
-              <FormSelect
-                ariaLabel="Filtruj po wkładzie własnym"
-                value={cardFilter}
-                options={contributionFilterOptions}
-                onValueChange={(value) => setCardFilter(value as ContributionFilter)}
-              />
-            </Field>
+            {showContribution && (
+              <Field label="Wkład własny">
+                <FormSelect
+                  ariaLabel="Filtruj po wkładzie własnym"
+                  value={cardFilter}
+                  options={contributionFilterOptions}
+                  onValueChange={(value) => setCardFilter(value as ContributionFilter)}
+                />
+              </Field>
+            )}
             <Field label="Sortuj">
               <FormSelect
                 ariaLabel="Sortuj kandydatów"
@@ -571,7 +578,11 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
         {applications.length ? (
           applications.map((a) =>
             employer ? (
-              <article className="candidate-card" key={a.id}>
+              <article
+                className="candidate-card"
+                data-contribution={showContribution || undefined}
+                key={a.id}
+              >
                 <div className="candidate-card-main">
                   <Link className="candidate-card-name" to={`/app/kandydaci/${a.id}`}>
                     {a.candidateName}
@@ -582,11 +593,11 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                   </span>
                   <div className="candidate-facts">
                     <MatchScore score={a.score} />
-                    <ContributionStatus application={a} now={now} />
+                    {showContribution && <ContributionStatus application={a} now={now} />}
                   </div>
-                  <p className="candidate-card-summary">{a.summary}</p>
+                  {a.summary && <p className="candidate-card-summary">{a.summary}</p>}
                 </div>
-                <ContributionListZone application={a} now={now} />
+                {showContribution && <ContributionListZone application={a} now={now} />}
               </article>
             ) : (
               <article className="prototype-panel" key={a.id}>

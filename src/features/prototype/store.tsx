@@ -64,6 +64,7 @@ function useStore() {
     importState,
     clearError: () => setError(""),
     reset: () => commit(initialState(), true),
+    loadScenario: (next: State) => commit(next, true),
   };
 }
 type Store = ReturnType<typeof useStore>;

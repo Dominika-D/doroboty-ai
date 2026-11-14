@@ -55,6 +55,12 @@ Data: 10 synthetic sample candidates for BrightLabs (6 with a card), hidden from
 - In a Linux VM copy with Node 22: `tsc --noEmit`, `eslint --max-warnings=0`, Prettier check, 36 unit tests (9 new in `contribution.test.ts`), `npm run build` and `npm run verify:packet` passed.
 - Not run: Playwright browser journeys (no provisioned Chromium), visual review at desktop/mobile widths, separate review pass.
 
+## Test E8 preparation (2026-11-14)
+
+- Settings section loads set 1 or 2 in variant A or B (`e8State` in model.ts, data `data/e8-scenario.json`).
+- Moderator materials, set composition, company decisions and A/B order live in the vault (`supersprint/week-2-employer-repurchase/experiments/e8-przygotowanie-testu.md`), not in the app.
+- Checked in the built-in browser: set 1 in A (no contribution UI) and B (tab, status, summary, 2 questions, empty "Wynik" field).
+
 ## Files / Areas
 
 - `src/features/prototype/` model, data/contribution-samples.json, contribution.tsx, workspace, application-record, candidate-application, recruiting-application

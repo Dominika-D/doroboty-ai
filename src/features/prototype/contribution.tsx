@@ -102,7 +102,9 @@ function Answers({ card }: { card: Contribution }) {
       {contributionFields.map((field) => (
         <div key={field}>
           <dt>{contributionLabels[field]}</dt>
-          <dd>{card[field]}</dd>
+          <dd>
+            {card[field] || <span className="record-caption">Kandydat tego nie opisał.</span>}
+          </dd>
         </div>
       ))}
     </dl>
@@ -154,7 +156,7 @@ export function ContributionView({
       {application.contributionQuestions && application.contributionQuestions.length > 0 && (
         <section aria-labelledby="contribution-questions-title">
           <h4 id="contribution-questions-title" className="contribution-subheading">
-            Pytania na rozmowę (AI, symulacja)
+            Pytania na rozmowę (AI)
           </h4>
           <ol className="contribution-interview">
             {application.contributionQuestions.map((question) => (

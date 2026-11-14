@@ -1,5 +1,8 @@
 import { useState, type ChangeEvent } from "react";
+import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
+import { FormSelect } from "@/components/ui/form-select";
+import { e8State, type TestSet, type TestVariant } from "./model";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { usePrototype } from "./store";
 import { serializeState, MAX_IMPORT_BYTES } from "./storage";
@@ -16,8 +19,11 @@ export function downloadText(name: string, text: string, type = "application/jso
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 export function SettingsPage() {
-  const { state, reset, importState, original } = usePrototype();
-  const [pending, setPending] = useState<"reset" | "import" | null>(null);
+  const { state, reset, importState, original, loadScenario } = usePrototype();
+  const navigate = useNavigate();
+  const [pending, setPending] = useState<"reset" | "import" | "test" | null>(null);
+  const [testSet, setTestSet] = useState<TestSet>(state.testSet ?? "1");
+  const [testVariant, setTestVariant] = useState<TestVariant>(state.testVariant ?? "A");
   const [raw, setRaw] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -38,6 +44,12 @@ export function SettingsPage() {
     }
   }
   function confirm() {
+    if (pending === "test") {
+      loadScenario(e8State(testSet, testVariant));
+      setPending(null);
+      navigate("/app/kandydaci");
+      return;
+    }
     if (pending === "reset") {
       reset();
       setMessage("Przywrócono scenariusz początkowy.");
@@ -93,6 +105,47 @@ export function SettingsPage() {
         )}
         {message && <p role="status">{message}</p>}
       </section>
+      <section className="prototype-panel prototype-form mt-6" aria-labelledby="e8-title">
+        <h2 id="e8-title">Test z rekruterami (E8)</h2>
+        <p>
+          Wczytuje zestaw 10 zgłoszeń na jedną ofertę i wchodzi jako Karolina. Wersja A to panel jak
+          dziś, wersja B to panel z kartą wkładu. Wczytanie zastępuje dane w tej przeglądarce.
+        </p>
+        {state.testSet && (
+          <p role="status">
+            Wczytany: zestaw {state.testSet}, wersja {state.testVariant}.
+          </p>
+        )}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="field">
+            <span>Zestaw</span>
+            <FormSelect
+              ariaLabel="Zestaw zgłoszeń"
+              value={testSet}
+              options={[
+                { value: "1", label: "Zestaw 1 – kontrola dokumentacji" },
+                { value: "2", label: "Zestaw 2 – katalog produktów" },
+              ]}
+              onValueChange={(value) => setTestSet(value as TestSet)}
+            />
+          </label>
+          <label className="field">
+            <span>Wersja</span>
+            <FormSelect
+              ariaLabel="Wersja panelu"
+              value={testVariant}
+              options={[
+                { value: "A", label: "A – panel jak dziś" },
+                { value: "B", label: "B – karta wkładu" },
+              ]}
+              onValueChange={(value) => setTestVariant(value as TestVariant)}
+            />
+          </label>
+        </div>
+        <div>
+          <Button onClick={() => setPending("test")}>Wczytaj zestaw do testu</Button>
+        </div>
+      </section>
       <section className="prototype-panel prototype-form mt-6">
         <h2>O prototypie</h2>
         <p>
@@ -105,9 +158,15 @@ export function SettingsPage() {
         onOpenChange={(v) => {
           if (!v) setPending(null);
         }}
-        title={pending === "reset" ? "Zresetować scenariusz?" : "Zastąpić dane scenariusza?"}
+        title={
+          pending === "reset"
+            ? "Zresetować scenariusz?"
+            : pending === "test"
+              ? `Wczytać zestaw ${testSet}, wersja ${testVariant}?`
+              : "Zastąpić dane scenariusza?"
+        }
         description="Ta operacja zastąpi lokalne zmiany. Możesz najpierw wyeksportować dane."
-        label={pending === "reset" ? "Resetuj" : "Importuj"}
+        label={pending === "reset" ? "Resetuj" : pending === "test" ? "Wczytaj" : "Importuj"}
         pending={false}
         onConfirm={confirm}
       />

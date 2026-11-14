@@ -574,3 +574,12 @@
   font-size: 13px;
   line-height: 1.6;
 }
+
+/* Candidate view stage colors (Dominika, 2026-11-14): sent and closed grey,
+   in progress blue, interview invitation green. */
+.record-stage[data-audience="candidate"]:is([data-stage="submitted"], [data-stage="rejected"]) {
+  background: #efede8;
+}
+.record-stage[data-audience="candidate"][data-stage="interview_invited"] {
+  background: #c9f2c4;
+}

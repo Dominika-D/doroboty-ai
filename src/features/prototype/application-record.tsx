@@ -68,7 +68,6 @@ export function ApplicationRecord({
           <span
             className="record-stage"
             data-stage={application.stage}
-            data-audience={audience}
             tabIndex={-1}
             ref={statusRef}
           >

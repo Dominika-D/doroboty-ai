@@ -43,6 +43,14 @@ export function RecruitingApplication({ application }: { application: Applicatio
     if (unseen) run({ type: "mark_contribution_seen", applicationId: application.id });
   }, [unseen, application.id, run]);
 
+  // After a stage change, move focus to the new stage so keyboard and screen-reader users keep context.
+  useLayoutEffect(() => {
+    if (pendingFocus.current) {
+      statusRef.current?.focus();
+      pendingFocus.current = false;
+    }
+  }, [application.stage]);
+
   useLayoutEffect(() => {
     if (pendingRequestFocus.current) {
       requestRef.current?.focus();

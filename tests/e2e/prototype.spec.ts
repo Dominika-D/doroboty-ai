@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { initialState } from "../../src/features/prototype/model";
+import { contributionFields, initialState } from "../../src/features/prototype/model";
 import { STORAGE_KEY } from "../../src/features/prototype/storage";
 import { readFile } from "node:fs/promises";
 async function choose(page: Page, name: string) {
@@ -370,7 +370,12 @@ for (const width of [1440, 375]) {
     const form = page.locator("main form");
     const answer = page.getByLabel("Dlaczego pasujesz do tej roli?");
     await expect(answer).toHaveValue(draft.answer);
-    await expect(form.getByRole("textbox")).toHaveCount(1);
+    const answerSection = form.getByRole("region", { name: "Odpowiedź do aplikacji" });
+    await expect(answerSection.getByRole("textbox")).toHaveCount(1);
+    // The optional "Wkład własny" card adds its four fixed questions after the answer.
+    await expect(form.getByRole("textbox")).toHaveCount(1 + contributionFields.length);
+    const firstContribution = form.locator(`#application-contribution-${contributionFields[0]}`);
+    const lastContribution = form.locator(`#application-contribution-${contributionFields.at(-1)}`);
     await expect(page.getByLabel("Twoje notatki do aplikacji (opcjonalnie)")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Przygotuj propozycję z AI" })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Użyj propozycji" })).toHaveCount(0);
@@ -390,6 +395,9 @@ for (const width of [1440, 375]) {
     ).toBe(true);
     await answer.focus();
     await page.keyboard.press("Tab");
+    await expect(firstContribution).toBeFocused();
+    await lastContribution.focus();
+    await page.keyboard.press("Tab");
     await expect(page.getByRole("checkbox")).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(page.getByRole("button", { name: "Wyślij aplikację", exact: true })).toBeFocused();
@@ -397,6 +405,7 @@ for (const width of [1440, 375]) {
     await expect(page.getByRole("button", { name: "Zapisz szkic", exact: true })).toBeFocused();
     const editedAnswer = "Moja poprawiona odpowiedź opisuje doświadczenie potrzebne w tej roli.";
     await answer.fill(editedAnswer);
+    await lastContribution.focus();
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
@@ -417,7 +426,7 @@ for (const width of [1440, 375]) {
       path: `artifacts/application-simplified-${width}.png`,
       fullPage: true,
     });
-    await answer.focus();
+    await lastContribution.focus();
     await page.keyboard.press("Tab");
     await page.keyboard.press("Space");
     await page.keyboard.press("Tab");
@@ -702,6 +711,8 @@ test("process sheet keeps notes across keyboard tabs and saves stage history wit
   const cv = page.getByRole("tab", { name: "CV", exact: true });
   await answer.focus();
   await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("tab", { name: "Wkład własny", exact: true })).toBeFocused();
+  await page.keyboard.press("ArrowRight");
   await expect(cv).toBeFocused();
   await expect(cv).toHaveAttribute("aria-selected", "true");
   const preview = page.locator("iframe[title='Podgląd CV (PDF)']");
@@ -929,6 +940,8 @@ test("candidate record shares snapshot tabs while excluding employer notes and m
   await expect(page.getByRole("link", { name: "Pobierz CV (PDF)", exact: true })).toHaveCount(0);
   await page.getByRole("tab", { name: "Odpowiedź", exact: true }).focus();
   await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("tab", { name: "Wkład własny", exact: true })).toBeFocused();
+  await page.keyboard.press("ArrowRight");
   await expect(page.getByRole("tab", { name: "CV", exact: true })).toBeFocused();
   await expect(page.locator("iframe[title='Podgląd CV (PDF)']")).toHaveAttribute(
     "src",
@@ -995,3 +1008,49 @@ test("candidate snapshot supports custom CV and long content at desktop and mobi
     record.answer,
   );
 });
+
+for (const width of [1280, 320]) {
+  test(`a crashed screen shows a recovery message instead of a blank page at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    // Simulate a rendering failure without product hooks: date formatting throws while enabled.
+    await page.addInitScript(() => {
+      // "format" is an accessor returning a bound function; wrap its original getter.
+      const original = Object.getOwnPropertyDescriptor(Intl.DateTimeFormat.prototype, "format")!;
+      Object.defineProperty(Intl.DateTimeFormat.prototype, "format", {
+        configurable: true,
+        get() {
+          if ((window as unknown as { breakDates?: boolean }).breakDates)
+            throw new Error("Simulated rendering failure");
+          return original.get!.call(this);
+        },
+      });
+    });
+    const consoleErrors: string[] = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") consoleErrors.push(message.text());
+    });
+    await choose(page, "Karolina Wiśniewska");
+    await page.evaluate(() => {
+      (window as unknown as { breakDates?: boolean }).breakDates = true;
+    });
+    await page.goto("/#/app/kandydaci/application-example");
+    await expect(page.getByRole("heading", { level: 1, name: "Coś poszło nie tak" })).toBeVisible();
+    await expect(page.locator("main")).toContainText("Twoje dane w tej przeglądarce nie zostały");
+    await expect(page.getByRole("button", { name: "Odśwież stronę", exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    const accessibility = await new AxeBuilder({ page }).include("main").analyze();
+    expect(accessibility.violations).toEqual([]);
+    expect(consoleErrors.join("\n")).not.toContain("Notatka");
+    await page.evaluate(() => {
+      (window as unknown as { breakDates?: boolean }).breakDates = false;
+    });
+    await page.getByRole("link", { name: "Wróć do ofert", exact: true }).click();
+    await expect(page).toHaveURL(/#\/oferty$/);
+    await expect(page.getByRole("heading", { name: "Coś poszło nie tak" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  });
+}

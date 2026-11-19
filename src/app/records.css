@@ -275,6 +275,13 @@
   }
 }
 @media (max-width: 600px) {
+  /* Three tabs (Odpowiedź, Wkład własny, CV) must fit a 320 px screen. */
+  .record-tabs {
+    gap: 4px;
+  }
+  .record-tabs .record-tab {
+    padding-inline: 8px;
+  }
   .record-breadcrumb {
     margin-bottom: 20px;
     font-size: 12px;

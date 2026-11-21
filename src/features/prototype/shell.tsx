@@ -68,7 +68,7 @@ const employerNav = [
   ["/app/organizacja", "Organizacja", Building2],
 ] as const;
 export function Shell() {
-  const { state, issue, error, clearError, run } = usePrototype();
+  const { state, issue, error, clearError } = usePrototype();
   const person = currentPerson(state);
   const { pathname } = useLocation();
   const workspace = pathname.startsWith("/app") && person;
@@ -89,7 +89,6 @@ export function Shell() {
       : person?.role === "operator"
         ? [["/app/case", "Materiały case study", FileText] as const]
         : candidateNav;
-  const signOut = () => run({ type: "select_person", id: null });
   const content = (
     <>
       <>
@@ -154,7 +153,7 @@ export function Shell() {
               <BrandMark />
               DoRoboty.ai
             </Link>
-            <div className="workspace-label">
+            <div className="workspace-label ph-no-capture">
               <span className="workspace-avatar">{person.name[0]}</span>
               <div>
                 <strong>{person.name}</strong>
@@ -185,7 +184,7 @@ export function Shell() {
               <Link className="nav-link" to="/oferty">
                 Wszystkie oferty
               </Link>
-              <Link className="nav-link" to="/auth/sign-in" onClick={signOut}>
+              <Link className="nav-link" to="/auth/sign-in">
                 Zmień osobę
               </Link>
             </nav>
@@ -199,7 +198,7 @@ export function Shell() {
                     ? "Strefa pracodawcy"
                     : "Case study"}
               </span>
-              <Link to="/auth/sign-in" onClick={signOut}>
+              <Link className="ph-no-capture" to="/auth/sign-in">
                 {person.name}
               </Link>
             </div>
@@ -226,7 +225,6 @@ export function Shell() {
                     key={item.to}
                     className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:inline"
                     to={item.to}
-                    onClick={item.to.startsWith("/auth") ? signOut : undefined}
                   >
                     {item.label}
                   </Link>
@@ -266,7 +264,6 @@ export function Shell() {
                       to="/auth/sign-in"
                       aria-label="Zmień osobę"
                       title="Zmień osobę"
-                      onClick={signOut}
                     >
                       <LogOut aria-hidden="true" />
                     </Link>
@@ -306,11 +303,7 @@ export function Shell() {
                 <Link to="/oferty">Oferty</Link>
                 <Link to="/metodologia">Metodologia</Link>
                 <Link to="/polityka-prywatnosci">Prywatność</Link>
-                <Link
-                  className="inline-flex items-center gap-1"
-                  to="/auth/sign-in"
-                  onClick={signOut}
-                >
+                <Link className="inline-flex items-center gap-1" to="/auth/sign-in">
                   Strefa case <ArrowUpRight className="size-4" />
                 </Link>
               </nav>

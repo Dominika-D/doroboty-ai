@@ -1,5 +1,5 @@
 import { useState, type Ref } from "react";
-import posthog from "posthog-js";
+import { capture } from "@/lib/analytics";
 import { Link } from "react-router";
 import { Tooltip } from "@base-ui/react/tooltip";
 import { Bell, Info, WandSparkles } from "lucide-react";
@@ -19,9 +19,6 @@ import {
   type ContributionNotification,
 } from "./model";
 
-const posthogEnabled = Boolean(
-  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
-);
 const dateFormat = new Intl.DateTimeFormat("pl-PL", { dateStyle: "medium", timeStyle: "short" });
 export const formatContributionDate = (value: string) => dateFormat.format(new Date(value));
 
@@ -61,7 +58,7 @@ export function ContributionFields({
   firstFieldRef?: Ref<HTMLTextAreaElement>;
 }) {
   return (
-    <ol className="contribution-questions">
+    <ol className="contribution-questions ph-no-capture">
       {contributionFields.map((field, index) => (
         <li key={field}>
           <label className="field" htmlFor={`${idPrefix}-${field}`}>
@@ -103,7 +100,7 @@ export function contributionAsText(
 
 function Answers({ card }: { card: Contribution }) {
   return (
-    <dl className="contribution-answers">
+    <dl className="contribution-answers ph-no-capture">
       {contributionFields.map((field) => (
         <div key={field}>
           <dt>{contributionLabels[field]}</dt>
@@ -142,13 +139,13 @@ export function ContributionView({
   );
   if (audience === "candidate")
     return (
-      <div className="contribution-card">
+      <div className="contribution-card ph-no-capture">
         <Answers card={card} />
         {added}
       </div>
     );
   return (
-    <div className="contribution-card">
+    <div className="contribution-card ph-no-capture">
       {application.contributionSummary && (
         <section className="contribution-summary" aria-labelledby="contribution-summary-title">
           <h4 id="contribution-summary-title" className="contribution-zone-label">
@@ -207,7 +204,10 @@ export function ContributionNotifications({
 }) {
   if (notifications.length === 0) return null;
   return (
-    <section className="contribution-notifications" aria-labelledby="contribution-notifications">
+    <section
+      className="contribution-notifications ph-no-capture"
+      aria-labelledby="contribution-notifications"
+    >
       <h2 id="contribution-notifications">
         <Bell aria-hidden="true" className="inline size-5" /> Powiadomienia ({notifications.length})
       </h2>
@@ -245,7 +245,7 @@ export function ContributionListZone({
   const state = contributionState(application, now);
   const deadline = contributionDeadline(application);
   return (
-    <div className="candidate-card-contribution" data-state={state}>
+    <div className="candidate-card-contribution ph-no-capture" data-state={state}>
       {state === "filled" ? (
         <>
           <span className="contribution-zone-label">
@@ -266,11 +266,10 @@ export function ContributionListZone({
                     size="sm"
                     onClick={() => {
                       if (run({ type: "request_contribution", applicationId: application.id })) {
-                        if (posthogEnabled)
-                          posthog.capture("contribution_requested", {
-                            application_id: application.id,
-                            source: "candidate_list",
-                          });
+                        capture("contribution_requested", {
+                          application_id: application.id,
+                          source: "candidate_list",
+                        });
                         setMessage(`Wysłano prośbę do ${application.candidateName}.`);
                       }
                     }}

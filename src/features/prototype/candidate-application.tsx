@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import posthog from "posthog-js";
+import { capture } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { ApplicationRecord } from "./application-record";
 import {
@@ -13,10 +13,6 @@ import {
 } from "./model";
 import { usePrototype } from "./store";
 import { ContributionFields, ContributionView, formatContributionDate } from "./contribution";
-
-const posthogEnabled = Boolean(
-  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
-);
 
 export function CandidateApplication({ application }: { application: Application }) {
   const { state, run } = usePrototype();
@@ -42,8 +38,7 @@ export function CandidateApplication({ application }: { application: Application
       return;
     }
     if (run({ type: "add_contribution", applicationId: application.id, contribution: card })) {
-      if (posthogEnabled)
-        posthog.capture("contribution_submitted", { application_id: application.id });
+      capture("contribution_submitted", { application_id: application.id });
       setCardInvalid([]);
       setAnnouncement("Opis wkładu został wysłany pracodawcy.");
     }
@@ -118,10 +113,9 @@ export function CandidateApplication({ application }: { application: Application
                   variant="destructive"
                   onClick={() => {
                     if (run({ type: "withdraw", applicationId: application.id })) {
-                      if (posthogEnabled)
-                        posthog.capture("application_withdrawn", {
-                          application_id: application.id,
-                        });
+                      capture("application_withdrawn", {
+                        application_id: application.id,
+                      });
                       focusAfter.current = "status";
                       setConfirming(false);
                       setAnnouncement("Aplikacja została wycofana.");

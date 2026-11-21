@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import posthog from "posthog-js";
+import { capture } from "@/lib/analytics";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router";
 import { CheckCircle2, FileText } from "lucide-react";
 import { ConfettiBurst, type ConfettiOrigin } from "@/components/confetti-burst";
@@ -47,10 +47,6 @@ import { MatchScore } from "./match-score";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
 import { posthogLog } from "@/lib/posthog-logs";
-
-const posthogEnabled = Boolean(
-  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
-);
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -111,7 +107,7 @@ export function RequireRole({
   role?: "candidate" | "employer" | "operator";
   children: ReactNode;
 }) {
-  const { state, run } = usePrototype();
+  const { state } = usePrototype();
   const person = currentPerson(state);
   if (!person) return <PersonPicker />;
   if (role && person.role !== role)
@@ -122,11 +118,7 @@ export function RequireRole({
           {role === "candidate" ? "kandydata" : role === "employer" ? "pracodawcy" : "prowadzącego"}
           .
         </p>
-        <Link
-          className={buttonVariants({ variant: "outline" })}
-          to="/auth/sign-in"
-          onClick={() => run({ type: "select_person", id: null })}
-        >
+        <Link className={buttonVariants({ variant: "outline" })} to="/auth/sign-in">
           Zmień osobę
         </Link>
       </Empty>
@@ -202,7 +194,7 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
         },
       })
     ) {
-      if (posthogEnabled) posthog.capture("profile_saved");
+      capture("profile_saved");
       setMessage("Profil został zapisany.");
     }
   }
@@ -227,7 +219,7 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           <p>{person.bio}</p>
         </div>
       ) : (
-        <form onSubmit={save} className="prototype-panel prototype-form">
+        <form onSubmit={save} className="prototype-panel prototype-form ph-no-capture">
           <Field label="Imię i nazwisko">
             <Input name="name" required maxLength={200} defaultValue={person.name} />
           </Field>
@@ -370,8 +362,7 @@ export function ApplyPage() {
       return;
     }
     if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent, contribution })) {
-      if (posthogEnabled)
-        posthog.capture("application_submitted", { job_id: job!.id, job_category: job!.category });
+      capture("application_submitted", { job_id: job!.id, job_category: job!.category });
       posthogLog.info("application submission completed", {
         job_id: job!.id,
         job_category: job!.category,
@@ -397,7 +388,7 @@ export function ApplyPage() {
         <form
           noValidate
           onSubmit={submit}
-          className="record-sheet application-form"
+          className="record-sheet application-form ph-no-capture"
           aria-labelledby="application-form-title"
         >
           <header className="application-form-intro">
@@ -510,11 +501,10 @@ export function ApplyPage() {
                   if (
                     run({ type: "draft", jobId: job.id, notes, generated, answer, contribution })
                   ) {
-                    if (posthogEnabled)
-                      posthog.capture("application_draft_saved", {
-                        job_id: job.id,
-                        job_category: job.category,
-                      });
+                    capture("application_draft_saved", {
+                      job_id: job.id,
+                      job_category: job.category,
+                    });
                     setMessage("Szkic został zapisany.");
                   }
                 }}
@@ -605,7 +595,7 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
           applications.map((a) =>
             employer ? (
               <article
-                className="candidate-card"
+                className="candidate-card ph-no-capture"
                 data-contribution={showContribution || undefined}
                 key={a.id}
               >
@@ -626,7 +616,7 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                 {showContribution && <ContributionListZone application={a} now={now} />}
               </article>
             ) : (
-              <article className="prototype-panel" key={a.id}>
+              <article className="prototype-panel ph-no-capture" key={a.id}>
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <Link

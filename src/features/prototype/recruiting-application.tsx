@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import posthog from "posthog-js";
+import { capture } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ApplicationRecord } from "./application-record";
@@ -15,10 +15,6 @@ import {
 } from "./model";
 import { usePrototype } from "./store";
 import { ContributionView, contributionAsText, formatContributionDate } from "./contribution";
-
-const posthogEnabled = Boolean(
-  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
-);
 
 export function RecruitingApplication({ application }: { application: Application }) {
   const { state, run } = usePrototype();
@@ -100,8 +96,7 @@ export function RecruitingApplication({ application }: { application: Applicatio
               <Button
                 onClick={() => {
                   if (run({ type: "request_contribution", applicationId: application.id })) {
-                    if (posthogEnabled)
-                      posthog.capture("contribution_requested", { application_id: application.id });
+                    capture("contribution_requested", { application_id: application.id });
                     setAnnouncement("Wysłano prośbę o opis wkładu.");
                     pendingRequestFocus.current = true;
                   }
@@ -161,11 +156,10 @@ export function RecruitingApplication({ application }: { application: Applicatio
                     variant={stage === "rejected" ? "outline" : "default"}
                     onClick={() => {
                       if (run({ type: "stage", applicationId: application.id, stage, note })) {
-                        if (posthogEnabled)
-                          posthog.capture("application_stage_changed", {
-                            application_id: application.id,
-                            stage,
-                          });
+                        capture("application_stage_changed", {
+                          application_id: application.id,
+                          stage,
+                        });
                         setNote("");
                         setAnnouncement(`Zapisano etap: ${stageLabels[stage]}.`);
                         pendingFocus.current = true;

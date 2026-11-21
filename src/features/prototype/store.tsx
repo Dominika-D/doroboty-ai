@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import posthog from "posthog-js";
+import { identifyPersona } from "@/lib/analytics";
 import { currentPerson, initialState, transition, type Action, type State } from "./model";
 import { parseState, readState, saveState, type StoragePort } from "./storage";
 function browserStorage(): StoragePort | null {
@@ -60,18 +60,12 @@ function useStore() {
     document.documentElement.classList.remove("dark");
   }, []);
   useEffect(() => {
-    if (!import.meta.env.VITE_POSTHOG_KEY || !import.meta.env.VITE_POSTHOG_HOST) return;
-
     const person = activePersonRef.current;
-    if (!person) {
-      if (identifiedPersonId.current) posthog.reset();
-      identifiedPersonId.current = null;
-      return;
-    }
-
-    if (identifiedPersonId.current && identifiedPersonId.current !== person.id) posthog.reset();
-    posthog.identify(person.id, { name: person.name, role: person.role });
-    identifiedPersonId.current = person.id;
+    identifyPersona(
+      person ? { id: person.id, role: person.role } : null,
+      identifiedPersonId.current,
+    );
+    identifiedPersonId.current = person?.id ?? null;
   }, [state.activePersonId]);
   return {
     state,

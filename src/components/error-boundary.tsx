@@ -1,13 +1,13 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import posthog from "posthog-js";
+import { captureException } from "@/lib/analytics";
 import { buttonVariants } from "@/components/ui/button";
 import { posthogLog } from "@/lib/posthog-logs";
 import { cn } from "@/lib/utils";
 
-const posthogEnabled = Boolean(
-  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
-);
-
+/**
+ * Replaces a crashed screen with a short explanation instead of a blank page.
+ * Logs only the error and component stack; never application state or free text.
+ */
 export class ErrorBoundary extends Component<
   { children: ReactNode; standalone?: boolean },
   { failed: boolean }
@@ -20,7 +20,7 @@ export class ErrorBoundary extends Component<
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error("DoRoboty.ai: screen failed to render", error, info.componentStack);
-    if (posthogEnabled) posthog.captureException(error);
+    captureException(error);
     posthogLog.error("screen rendering failed", {
       error_type: error.name,
       boundary: this.props.standalone ? "application" : "route",

@@ -54,7 +54,7 @@ export function ApplicationRecord({
   const context = candidate ? application.candidateName : application.jobTitle;
   const submitted = history[0];
   return (
-    <article className="recruiting-record">
+    <article className="recruiting-record ph-no-capture">
       <header className="recruiting-header">
         <nav aria-label="Ścieżka nawigacji" className="record-breadcrumb">
           <BackLink to={candidate ? "/app/aplikacje" : "/app/kandydaci"}>

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import posthog from "posthog-js";
+import { capture } from "@/lib/analytics";
 import { Link, useNavigate, useParams } from "react-router";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,10 +17,6 @@ import { currentPerson, jobSchema } from "./model";
 import { usePrototype } from "./store";
 import { Field } from "./workspace";
 import { Empty, NotFound, PageTitle } from "./shell";
-
-const posthogEnabled = Boolean(
-  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
-);
 
 export function EmployerJobs() {
   const { state } = usePrototype();
@@ -139,12 +135,11 @@ export function EmployerJobEditor() {
       return;
     }
     if (run({ type: "publish", job: parsed.data })) {
-      if (posthogEnabled)
-        posthog.capture("job_published", {
-          job_id: parsed.data.id,
-          job_category: parsed.data.category,
-          is_new: !existing,
-        });
+      capture("job_published", {
+        job_id: parsed.data.id,
+        job_category: parsed.data.category,
+        is_new: !existing,
+      });
       navigate("/app/oferty");
     }
   }
@@ -184,7 +179,7 @@ export function EmployerJobEditor() {
                 `${title}\n\nO roli\n${source.trim().slice(0, 10000)}\n\nJak pracujemy\nŁączymy potrzeby użytkowników, odpowiedzialne wykorzystanie AI i mierzalne efekty.\n\nProces rekrutacji\nPrześlij aplikację i opowiedz o projekcie, w którym Twoje decyzje wpłynęły na wynik.`,
               );
               setApproved(false);
-              if (posthogEnabled) posthog.capture("job_description_generated");
+              capture("job_description_generated");
             }}
           >
             Przygotuj opis z AI
@@ -301,7 +296,7 @@ export function CompanyEditor() {
         description: String(data.get("description")),
       })
     ) {
-      if (posthogEnabled) posthog.capture("company_profile_saved");
+      capture("company_profile_saved");
       setMessage("Dane firmy zostały zapisane.");
     }
   }

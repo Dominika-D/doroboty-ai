@@ -153,7 +153,7 @@ export function Shell() {
               <BrandMark />
               DoRoboty.ai
             </Link>
-            <div className="workspace-label">
+            <div className="workspace-label ph-no-capture">
               <span className="workspace-avatar">{person.name[0]}</span>
               <div>
                 <strong>{person.name}</strong>
@@ -198,7 +198,9 @@ export function Shell() {
                     ? "Strefa pracodawcy"
                     : "Case study"}
               </span>
-              <Link to="/auth/sign-in">{person.name}</Link>
+              <Link className="ph-no-capture" to="/auth/sign-in">
+                {person.name}
+              </Link>
             </div>
             <main id="main" ref={main} tabIndex={-1} className="main-content outline-none">
               {content}

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { capture } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ApplicationRecord } from "./application-record";
@@ -95,6 +96,7 @@ export function RecruitingApplication({ application }: { application: Applicatio
               <Button
                 onClick={() => {
                   if (run({ type: "request_contribution", applicationId: application.id })) {
+                    capture("contribution_requested", { application_id: application.id });
                     setAnnouncement("Wysłano prośbę o opis wkładu.");
                     pendingRequestFocus.current = true;
                   }
@@ -154,6 +156,10 @@ export function RecruitingApplication({ application }: { application: Applicatio
                     variant={stage === "rejected" ? "outline" : "default"}
                     onClick={() => {
                       if (run({ type: "stage", applicationId: application.id, stage, note })) {
+                        capture("application_stage_changed", {
+                          application_id: application.id,
+                          stage,
+                        });
                         setNote("");
                         setAnnouncement(`Zapisano etap: ${stageLabels[stage]}.`);
                         pendingFocus.current = true;

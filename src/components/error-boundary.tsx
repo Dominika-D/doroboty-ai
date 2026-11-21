@@ -1,5 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
+import { captureException } from "@/lib/analytics";
 import { buttonVariants } from "@/components/ui/button";
+import { posthogLog } from "@/lib/posthog-logs";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,6 +20,11 @@ export class ErrorBoundary extends Component<
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error("DoRoboty.ai: screen failed to render", error, info.componentStack);
+    captureException(error);
+    posthogLog.error("screen rendering failed", {
+      error_type: error.name,
+      boundary: this.props.standalone ? "application" : "route",
+    });
   }
 
   render() {

@@ -1,4 +1,5 @@
 import { Link, useLocation, useParams, useSearchParams } from "react-router";
+import { capture } from "@/lib/analytics";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, Users, MapPin, BriefcaseBusiness, Bookmark } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -146,6 +147,10 @@ export function JobsPage() {
       if (value) next.set(key, value);
       else next.delete(key);
     }
+    capture("job_search_submitted", {
+      has_query: Boolean(String(data.get("query") ?? "").trim()),
+      has_location: Boolean(String(data.get("location") ?? "").trim()),
+    });
     setParams(next);
   }
   const locations = [...new Set(all.flatMap((x) => x.locations))];
@@ -430,7 +435,13 @@ export function JobPage() {
                     variant="outline"
                     aria-label="Zapisz ofertę"
                     aria-pressed={saved}
-                    onClick={() => run({ type: "toggle_saved", jobId: job.id })}
+                    onClick={() => {
+                      if (run({ type: "toggle_saved", jobId: job.id }) && !saved)
+                        capture("job_saved", {
+                          job_id: job.id,
+                          job_category: job.category,
+                        });
+                    }}
                   >
                     <Bookmark className={cn(saved && "fill-current")} />
                     Zapisz ofertę

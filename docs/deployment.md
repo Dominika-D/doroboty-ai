@@ -12,7 +12,10 @@ Dominika Belina owns the published site. She reacts when it does not work; the i
 2. In Vercel: **Add New → Project**, import the `doroboty-ai` repository.
 3. Settings: Framework Preset **Vite**, Build Command `npm run build`, Output Directory `dist`, Install Command `npm ci`.
 4. Node.js: `package.json` requires `>=24 <27`, which Vercel uses over the project setting. Choose **24.x** in Settings → Build and Deployment → Node.js Version as well.
-5. No environment variables are needed. Do not add any secrets.
+5. Environment variables for PostHog analytics (Settings → Environment Variables, Production and Preview):
+   - `VITE_POSTHOG_KEY`: the Project API key from PostHog → Settings → Project (starts with `phc_`). It is a public browser key, not a secret.
+   - `VITE_POSTHOG_HOST`: `https://eu.i.posthog.com` (the project is in PostHog Cloud EU).
+     Vite writes them into the build, so after adding or changing them choose **Redeploy**. Without them the site works and sends nothing. Do not add any other secrets.
 6. Every new push to `main` publishes automatically. Run `./scripts/verify` before pushing.
 
 ## Check right after publishing (about 5 minutes)
@@ -24,6 +27,7 @@ Open the production address in a private browser window, then:
 3. Switch to the employer (Karolina or Tomasz), open the application and record a decision.
 4. Reload the page: the application and the decision are still there.
 5. The address starts with `https://` and the browser shows no security warning.
+6. PostHog → Activity → Live shows a `$pageview` and, after clicking "Zapisz ofertę" on a job card, an `$autocapture` click and `job_saved`.
 
 If any step fails, roll back (below) and note what happened.
 

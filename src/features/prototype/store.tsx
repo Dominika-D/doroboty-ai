@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { initialState, transition, type Action, type State } from "./model";
+import { identifyPersona } from "@/lib/analytics";
+import { currentPerson, initialState, transition, type Action, type State } from "./model";
 import { parseState, readState, saveState, type StoragePort } from "./storage";
 function browserStorage(): StoragePort | null {
   try {
@@ -15,6 +16,10 @@ function useStore() {
   const [error, setError] = useState("");
   const [blocked, setBlocked] = useState(loaded.blocked);
   const latest = useRef(state);
+  const activePerson = currentPerson(state);
+  const activePersonRef = useRef(activePerson);
+  activePersonRef.current = activePerson;
+  const identifiedPersonId = useRef<string | null>(null);
   function commit(next: State, replace = false) {
     latest.current = next;
     setState(next);
@@ -54,6 +59,14 @@ function useStore() {
   useEffect(() => {
     document.documentElement.classList.remove("dark");
   }, []);
+  useEffect(() => {
+    const person = activePersonRef.current;
+    identifyPersona(
+      person ? { id: person.id, role: person.role } : null,
+      identifiedPersonId.current,
+    );
+    identifiedPersonId.current = person?.id ?? null;
+  }, [state.activePersonId]);
   return {
     state,
     issue,

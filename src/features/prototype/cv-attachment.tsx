@@ -26,7 +26,7 @@ export function CvAttachment({
   // An imported custom CV must not be presented as a different prepared PDF.
   if (!filename || source?.cv !== fallbackText)
     return preview || layout === "row" ? (
-      <div className="cv-attachment">
+      <div className="cv-attachment ph-no-capture">
         <div className="cv-file-row">
           <FileText aria-hidden="true" size={24} />
           <div className="cv-file-description">
@@ -41,7 +41,7 @@ export function CvAttachment({
     );
   const href = `${import.meta.env.BASE_URL}cv/${filename}`;
   return (
-    <div className="cv-attachment">
+    <div className="cv-attachment ph-no-capture">
       <div className={layout === "row" ? "cv-file-row" : "space-y-4"}>
         {layout === "row" ? (
           <>

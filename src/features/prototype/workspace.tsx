@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { capture } from "@/lib/analytics";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router";
 import { CheckCircle2, FileText } from "lucide-react";
 import { ConfettiBurst, type ConfettiOrigin } from "@/components/confetti-burst";
@@ -45,6 +46,7 @@ import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
+import { posthogLog } from "@/lib/posthog-logs";
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -191,8 +193,10 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           location: String(data.get("location")),
         },
       })
-    )
+    ) {
+      capture("profile_saved");
       setMessage("Profil został zapisany.");
+    }
   }
   return (
     <>
@@ -215,7 +219,7 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           <p>{person.bio}</p>
         </div>
       ) : (
-        <form onSubmit={save} className="prototype-panel prototype-form">
+        <form onSubmit={save} className="prototype-panel prototype-form ph-no-capture">
           <Field label="Imię i nazwisko">
             <Input name="name" required maxLength={200} defaultValue={person.name} />
           </Field>
@@ -358,6 +362,11 @@ export function ApplyPage() {
       return;
     }
     if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent, contribution })) {
+      capture("application_submitted", { job_id: job!.id, job_category: job!.category });
+      posthogLog.info("application submission completed", {
+        job_id: job!.id,
+        job_category: job!.category,
+      });
       submittedOnce.current = true;
       setSubmitted(true);
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -379,7 +388,7 @@ export function ApplyPage() {
         <form
           noValidate
           onSubmit={submit}
-          className="record-sheet application-form"
+          className="record-sheet application-form ph-no-capture"
           aria-labelledby="application-form-title"
         >
           <header className="application-form-intro">
@@ -489,8 +498,15 @@ export function ApplyPage() {
                 disabled={submitted}
                 variant="outline"
                 onClick={() => {
-                  if (run({ type: "draft", jobId: job.id, notes, generated, answer, contribution }))
+                  if (
+                    run({ type: "draft", jobId: job.id, notes, generated, answer, contribution })
+                  ) {
+                    capture("application_draft_saved", {
+                      job_id: job.id,
+                      job_category: job.category,
+                    });
                     setMessage("Szkic został zapisany.");
+                  }
                 }}
               >
                 Zapisz szkic
@@ -579,7 +595,7 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
           applications.map((a) =>
             employer ? (
               <article
-                className="candidate-card"
+                className="candidate-card ph-no-capture"
                 data-contribution={showContribution || undefined}
                 key={a.id}
               >
@@ -600,7 +616,7 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                 {showContribution && <ContributionListZone application={a} now={now} />}
               </article>
             ) : (
-              <article className="prototype-panel" key={a.id}>
+              <article className="prototype-panel ph-no-capture" key={a.id}>
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <Link

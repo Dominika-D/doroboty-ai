@@ -1,4 +1,5 @@
 import { useState, type Ref } from "react";
+import posthog from "posthog-js";
 import { Link } from "react-router";
 import { Tooltip } from "@base-ui/react/tooltip";
 import { Bell, Info, WandSparkles } from "lucide-react";
@@ -18,6 +19,9 @@ import {
   type ContributionNotification,
 } from "./model";
 
+const posthogEnabled = Boolean(
+  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
+);
 const dateFormat = new Intl.DateTimeFormat("pl-PL", { dateStyle: "medium", timeStyle: "short" });
 export const formatContributionDate = (value: string) => dateFormat.format(new Date(value));
 
@@ -261,8 +265,14 @@ export function ContributionListZone({
                   <Button
                     size="sm"
                     onClick={() => {
-                      if (run({ type: "request_contribution", applicationId: application.id }))
+                      if (run({ type: "request_contribution", applicationId: application.id })) {
+                        if (posthogEnabled)
+                          posthog.capture("contribution_requested", {
+                            application_id: application.id,
+                            source: "candidate_list",
+                          });
                         setMessage(`Wysłano prośbę do ${application.candidateName}.`);
+                      }
                     }}
                   >
                     Poproś o opis wkładu

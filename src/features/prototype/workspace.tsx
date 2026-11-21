@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import posthog from "posthog-js";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router";
 import { CheckCircle2, FileText } from "lucide-react";
 import { ConfettiBurst, type ConfettiOrigin } from "@/components/confetti-burst";
@@ -45,6 +46,11 @@ import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
+import { posthogLog } from "@/lib/posthog-logs";
+
+const posthogEnabled = Boolean(
+  import.meta.env.VITE_POSTHOG_KEY && import.meta.env.VITE_POSTHOG_HOST,
+);
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -105,7 +111,7 @@ export function RequireRole({
   role?: "candidate" | "employer" | "operator";
   children: ReactNode;
 }) {
-  const { state } = usePrototype();
+  const { state, run } = usePrototype();
   const person = currentPerson(state);
   if (!person) return <PersonPicker />;
   if (role && person.role !== role)
@@ -116,7 +122,11 @@ export function RequireRole({
           {role === "candidate" ? "kandydata" : role === "employer" ? "pracodawcy" : "prowadzącego"}
           .
         </p>
-        <Link className={buttonVariants({ variant: "outline" })} to="/auth/sign-in">
+        <Link
+          className={buttonVariants({ variant: "outline" })}
+          to="/auth/sign-in"
+          onClick={() => run({ type: "select_person", id: null })}
+        >
           Zmień osobę
         </Link>
       </Empty>
@@ -191,8 +201,10 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           location: String(data.get("location")),
         },
       })
-    )
+    ) {
+      if (posthogEnabled) posthog.capture("profile_saved");
       setMessage("Profil został zapisany.");
+    }
   }
   return (
     <>
@@ -358,6 +370,12 @@ export function ApplyPage() {
       return;
     }
     if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent, contribution })) {
+      if (posthogEnabled)
+        posthog.capture("application_submitted", { job_id: job!.id, job_category: job!.category });
+      posthogLog.info("application submission completed", {
+        job_id: job!.id,
+        job_category: job!.category,
+      });
       submittedOnce.current = true;
       setSubmitted(true);
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -489,8 +507,16 @@ export function ApplyPage() {
                 disabled={submitted}
                 variant="outline"
                 onClick={() => {
-                  if (run({ type: "draft", jobId: job.id, notes, generated, answer, contribution }))
+                  if (
+                    run({ type: "draft", jobId: job.id, notes, generated, answer, contribution })
+                  ) {
+                    if (posthogEnabled)
+                      posthog.capture("application_draft_saved", {
+                        job_id: job.id,
+                        job_category: job.category,
+                      });
                     setMessage("Szkic został zapisany.");
+                  }
                 }}
               >
                 Zapisz szkic
